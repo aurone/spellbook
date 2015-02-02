@@ -8,6 +8,8 @@
 #include <moveit_msgs/OrientedBoundingBox.h>
 #include <moveit_msgs/CollisionMap.h>
 #include <nav_msgs/OccupancyGrid.h>
+#include <pcl_ros/point_cloud.h>
+#include <pcl/point_types.h>
 
 /// @example
 /// CostmapExtruder extruder(100, false);
@@ -20,7 +22,8 @@ public:
 
     CostmapExtruder(std::int8_t obs_threshold, bool unknown_obstacles);
 
-    octomap_msgs::Octomap::ConstPtr extrude(const nav_msgs::OccupancyGrid& grid, double extrusion);
+    bool extrude(const nav_msgs::OccupancyGrid& grid, double extrusion, octomap_msgs::Octomap& map);
+    bool extrude(const nav_msgs::OccupancyGrid& grid, double extrusion, pcl::PointCloud<pcl::PointXYZI>& map);
 
 private:
 

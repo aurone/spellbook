@@ -1,6 +1,7 @@
 #include "CostmapExtruder.h"
 // #include <leatherman/print.h>
 #include <octomap_msgs/conversions.h>
+#include <octomap_ros/conversions.h>
 #include <spellbook/stringifier/stringifier.h>
 #include <spellbook/msg_utils/msg_utils.h>
 
@@ -10,7 +11,7 @@ CostmapExtruder::CostmapExtruder(std::int8_t obs_threshold, bool unknown_obstacl
 {
 }
 
-octomap_msgs::Octomap::ConstPtr CostmapExtruder::extrude(const nav_msgs::OccupancyGrid& grid, double extrusion)
+bool CostmapExtruder::extrude(const nav_msgs::OccupancyGrid& grid, double extrusion, octomap_msgs::Octomap& map)
 {
     moveit_msgs::CollisionMap collision_map = extrude_to_collision_map(grid, extrusion);
 
@@ -28,19 +29,54 @@ octomap_msgs::Octomap::ConstPtr CostmapExtruder::extrude(const nav_msgs::Occupan
 
     log_octomap(octree);
 
-    octomap_msgs::Octomap::Ptr octomap(new octomap_msgs::Octomap);
-    if (!octomap) {
-        ROS_ERROR("Failed to instantiate octomap_msgs/Octomap");
-        return octomap;
-    }
+    octomap_msgs::Octomap octomap;
 
-    if (!octomap_msgs::fullMapToMsg(octree, *octomap)) {
+    if (!octomap_msgs::fullMapToMsg(octree, octomap)) {
         ROS_ERROR("Failed to convert OcTree to octomap_msgs/Octomap");
-        return octomap;
+        return false;
     }
 
-    octomap->header = collision_map.header;
-    return octomap;
+    octomap.header = collision_map.header;
+    map = octomap;
+    return true;
+}
+
+bool CostmapExtruder::extrude(
+    const nav_msgs::OccupancyGrid& grid,
+    double extrusion,
+    pcl::PointCloud<pcl::PointXYZI>& map)
+{
+    moveit_msgs::CollisionMap collision_map = extrude_to_collision_map(grid, extrusion);
+
+    // convert the collision map to a point cloud
+    ROS_INFO("Creating Octomap from Collision Map");
+    ROS_INFO("  %zd oriented bounding box cells", collision_map.boxes.size());
+    const double res = collision_map.boxes.front().extents.x;
+    ROS_INFO("  Resolution: %0.3f", res);
+
+    octomap::Pointcloud octomap_cloud;
+    convert(collision_map, octomap_cloud);
+
+    octomap::OcTree octree(res);
+    octree.insertScan(octomap_cloud, octomap::point3d(0.0, 0.0, 0.0));
+
+    log_octomap(octree);
+
+    octomap::point3d_list points;
+    octree.getOccupied(points);
+
+    map.header = grid.header;
+    map.reserve(points.size());
+    // TODO: remove deprecation warning by migrating to iterators
+    for (octomap::point3d_list::const_iterator it = points.begin(); it != points.end(); ++it) {
+        pcl::PointXYZI point;
+        point.x = it->x();
+        point.y = it->y();
+        point.z = it->z();
+        point.intensity = 100;
+        map.push_back(point);
+    }
+    return true;
 }
 
 moveit_msgs::CollisionMap

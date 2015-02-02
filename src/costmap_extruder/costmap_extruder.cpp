@@ -47,14 +47,23 @@ int main(int argc, char *argv[])
     CostmapExtruder extruder(obs_threshold, false);
 
     const double unconfigured_height = 2.0;
-    octomap_msgs::Octomap::ConstPtr octomap = extruder.extrude(*TheOnlyOccupancyGrid, unconfigured_height);
-    if (!octomap) {
+    octomap_msgs::Octomap octomap;
+    if (!extruder.extrude(*TheOnlyOccupancyGrid, unconfigured_height, octomap)) {
         ROS_ERROR("Failed to extrude nav_msgs/OccupancyGrid to octomap_msgs/Octomap");
+        return 1;
+    }
+
+    pcl::PointCloud<pcl::PointXYZI> point_cloud;
+    if (!extruder.extrude(*TheOnlyOccupancyGrid, unconfigured_height, point_cloud)) {
+        ROS_ERROR("Failed to extrude nav_msgs/OccupancyGrid to pcl::PointCloud<pcl::PointXYZI>");
         return 1;
     }
 
     ros::Publisher octomap_pub = nh.advertise<octomap_msgs::Octomap>("fixed_octomap", 1, true);
     octomap_pub.publish(octomap);
+
+    ros::Publisher point_cloud_pub = nh.advertise<pcl::PointCloud<pcl::PointXYZI>>("fixed_point_cloud", 1, true);
+    point_cloud_pub.publish(point_cloud);
     ros::spin();
 
     return 0;
