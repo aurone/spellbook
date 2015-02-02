@@ -1,0 +1,5 @@
+add_subdirectory(costmap_extruder)
+add_subdirectory(kinect_tilt_control)
+add_subdirectory(msg_utils)
+add_subdirectory(rosbag_utils)
+
