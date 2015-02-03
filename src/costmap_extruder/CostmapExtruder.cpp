@@ -63,27 +63,48 @@ bool CostmapExtruder::extrude(
     log_octomap(octree);
 
     map.header = grid.header;
-    // map.reserve(points.size());
 
-    for (auto it = octree.begin(); it != octree.end(); ++it) {
-        pcl::PointXYZI point;
-        it.getX();
-        it.getY();
-        it.getZ();
-        point.intensity = 100;
+    map.reserve(octree.getNumLeafNodes());
+    for (auto lit = octree.begin_leafs(); lit != octree.end_leafs(); ++lit) {
+        if (octree.isNodeOccupied(*lit)) {
+            const double resolution = grid.info.resolution;
+            if (lit.getSize() <= resolution) {
+                pcl::PointXYZI point;
+                point.x = lit.getX();
+                point.y = lit.getY();
+                point.z = lit.getZ();
+                map.push_back(point);
+            }
+            else {
+                // TODO: I don't think these are correctly aligned with cell centers...
+                double ceil_val = ceil(lit.getSize()/resolution)*resolution;
+                for(double x = lit.getX()-ceil_val; x < lit.getX()+ceil_val; x += resolution) {
+                for(double y = lit.getY()-ceil_val; y < lit.getY()+ceil_val; y += resolution) {
+                for(double z = lit.getZ()-ceil_val; z < lit.getZ()+ceil_val; z += resolution) {
+                    pcl::PointXYZI point;
+                    point.x = x;
+                    point.y = y;
+                    point.z = z;
+                    map.push_back(point);
+                }
+                }
+                }
+            }
+        }
     }
 
-    octomap::point3d_list points;
-    octree.getOccupied(points);
-    // TODO: remove deprecation warning by migrating to iterators
-    for (octomap::point3d_list::const_iterator it = points.begin(); it != points.end(); ++it) {
-        pcl::PointXYZI point;
-        point.x = it->x();
-        point.y = it->y();
-        point.z = it->z();
-        point.intensity = 100;
-        map.push_back(point);
-    }
+//    map.reserve(points.size());
+//    octomap::point3d_list points;
+//    octree.getOccupied(points);
+//    // TODO: remove deprecation warning by migrating to iterators
+//    for (octomap::point3d_list::const_iterator it = points.begin(); it != points.end(); ++it) {
+//        pcl::PointXYZI point;
+//        point.x = it->x();
+//        point.y = it->y();
+//        point.z = it->z();
+//        point.intensity = 100;
+//        map.push_back(point);
+//    }
     return true;
 }
 
