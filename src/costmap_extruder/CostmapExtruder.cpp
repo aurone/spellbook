@@ -62,11 +62,19 @@ bool CostmapExtruder::extrude(
 
     log_octomap(octree);
 
+    map.header = grid.header;
+    // map.reserve(points.size());
+
+    for (auto it = octree.begin(); it != octree.end(); ++it) {
+        pcl::PointXYZI point;
+        it.getX();
+        it.getY();
+        it.getZ();
+        point.intensity = 100;
+    }
+
     octomap::point3d_list points;
     octree.getOccupied(points);
-
-    map.header = grid.header;
-    map.reserve(points.size());
     // TODO: remove deprecation warning by migrating to iterators
     for (octomap::point3d_list::const_iterator it = points.begin(); it != points.end(); ++it) {
         pcl::PointXYZI point;
