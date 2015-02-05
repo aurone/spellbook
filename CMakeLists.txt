@@ -29,7 +29,10 @@ link_directories(${openni_LIBRARY_DIRS})
 
 catkin_package(
     INCLUDE_DIRS include
+    LIBRARIES
+        msg_utils
     CATKIN_DEPENDS
+        sbpl_geometry_utils
     DEPENDS Boost Eigen)
 include_directories(${catkin_INCLUDE_DIRS})
 
