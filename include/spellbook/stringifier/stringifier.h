@@ -63,7 +63,7 @@ inline std::string to_string(const std::vector<double>& vec)
         // decimal point; allow space for the decimal point, leading 0, and
         // possible - sign
         ss << std::fixed << std::setprecision(3) << std::setw(6) << vec[i];
-        if (i != vec.size() - 1) {
+        if (i != (int)vec.size() - 1) {
             ss << ", ";
         }
     }
