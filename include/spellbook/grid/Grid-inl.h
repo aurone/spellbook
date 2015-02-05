@@ -194,13 +194,13 @@ typename Grid<N, T>::iterator Grid<N, T>::end()
 template <int N, typename T>
 typename Grid<N, T>::const_iterator Grid<N, T>::begin() const
 {
-    return const_cast<typename Grid<N, T>::const_iterator>(const_cast<Grid<N, T>*>(this)->begin());
+    return const_cast<Grid<N, T>*>(this)->begin();
 }
 
 template <int N, typename T>
 typename Grid<N, T>::const_iterator Grid<N, T>::end() const
 {
-    return const_cast<typename Grid<N, T>::const_iterator>(const_cast<Grid<N, T>*>(this)->end());
+    return const_cast<Grid<N, T>*>(this)->end();
 }
 
 template <int N, typename T>
