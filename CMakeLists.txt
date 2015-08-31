@@ -4,7 +4,6 @@ project(spellbook)
 find_package(Boost REQUIRED system thread)
 
 find_package(Eigen REQUIRED)
-include_directories(${Eigen_INCLUDE_DIRS})
 
 find_package(PkgConfig REQUIRED)
 
@@ -24,23 +23,30 @@ find_package(catkin REQUIRED COMPONENTS
     visualization_msgs)
 
 pkg_check_modules(openni REQUIRED libopenni)
-include_directories(${openni_INCLUDE_DIRS})
-link_directories(${openni_LIBRARY_DIRS})
 
 catkin_package(
-    INCLUDE_DIRS include
+    INCLUDE_DIRS
+        include
     LIBRARIES
         msg_utils
+        mapgen
     CATKIN_DEPENDS
         sbpl_geometry_utils
-    DEPENDS Boost Eigen)
-include_directories(${catkin_INCLUDE_DIRS})
-
-include_directories(include)
+    DEPENDS
+        Boost
+        Eigen)
 
 set(BUILD_SHARED_LIBS On)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 set(CMAKE_BUILD_TYPE Release)
+
+include_directories(${Boost_INCLUDE_DIRS})
+include_directories(${catkin_INCLUDE_DIRS})
+include_directories(${Eigen_INCLUDE_DIRS})
+include_directories(${openni_INCLUDE_DIRS})
+include_directories(include)
+
+link_directories(${openni_LIBRARY_DIRS})
 
 add_subdirectory(src)
 
