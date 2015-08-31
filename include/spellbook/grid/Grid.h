@@ -139,7 +139,9 @@ public:
         void assign_all(size_type coord);
     };
 
-    class GridIterator
+    class GridIterator : public std::iterator<
+            std::bidirectional_iterator_tag,
+            typename Grid<N, T>::value_type>
     {
         friend class Grid;
 
