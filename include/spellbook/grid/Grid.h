@@ -64,23 +64,37 @@ public:
 
     ~Grid();
 
-    /// Element access
-    /// @{
-    template <typename... CoordTypes> reference operator()(CoordTypes... coords);
-    template <typename... CoordTypes> const_reference operator()(CoordTypes... coords) const;
-    template <typename... CoordTypes> reference at(CoordTypes... coords);
-    template <typename... CoordTypes> const_reference at(CoordTypes... coords) const;
+    /// \name Element access
+    ///@{
+    template <typename... CoordTypes>
+    reference operator()(CoordTypes... coords);
 
-    template <typename... CoordTypes> reference operator()(const GridIndex& index);
-    template <typename... CoordTypes> const_reference operator()(const GridIndex& index) const;
-    template <typename... CoordTypes> reference at(const GridIndex& index);
-    template <typename... CoordTypes> const_reference at(const GridIndex& index) const;
+    template <typename... CoordTypes>
+    const_reference operator()(CoordTypes... coords) const;
+
+    template <typename... CoordTypes>
+    reference at(CoordTypes... coords);
+
+    template <typename... CoordTypes>
+    const_reference at(CoordTypes... coords) const;
+
+    template <typename... CoordTypes>
+    reference operator()(const GridIndex& index);
+
+    template <typename... CoordTypes>
+    const_reference operator()(const GridIndex& index) const;
+
+    template <typename... CoordTypes>
+    reference at(const GridIndex& index);
+
+    template <typename... CoordTypes>
+    const_reference at(const GridIndex& index) const;
 
     T* data() { return data_; }
-    /// @}
+    ///@}
 
-    /// Iterators
-    /// @{
+    /// \name Iterators
+    ///@{
     iterator begin();
     iterator end();
     const_iterator begin() const;
@@ -90,20 +104,20 @@ public:
     const_iterator grid_begin(const GridIndex& start, const GridIndex& end) const;
     iterator grid_end(const GridIndex& start, const GridIndex& end);
     const_iterator grid_end(const GridIndex& start, const GridIndex& end) const;
-    /// @}
+    ///@}
 
-    /// Capacity
-    /// @{
+    /// \name Capacity
+    ///@{
     size_type size(size_type dim) const;
     size_type total_size() const;
-    /// @}
+    ///@}
 
-    /// Modifiers
-    /// @{
+    /// \name Modifiers
+    ///@{
     void clear();
     template <typename... SizeTypes> void resize(SizeTypes... sizes);
     void assign(const T& value);
-    /// @}
+    ///@}
 
     class GridIndex
     {
@@ -155,8 +169,8 @@ public:
         GridIterator(const GridIterator& other);
         GridIterator& operator=(const GridIterator& rhs);
 
-        /// Iterator API
-        /// @{
+        /// \name Iterator API
+        ///@{
         GridIterator& operator++();
         GridIterator operator++(int);
 
@@ -168,7 +182,7 @@ public:
 
         GridIterator& operator--();
         GridIterator operator--(int);
-        /// @}
+        ///@}
 
         size_type coord(size_type dim) const { return curr_(dim); }
 
