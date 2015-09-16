@@ -199,6 +199,13 @@ auto Grid<N, T>::at(const GridIndex& index) const -> const_reference
 }
 
 template <int N, typename T>
+template <typename... CoordTypes>
+bool Grid<N, T>::within_bounds(CoordTypes... coords) const
+{
+    return within_bounds<0>(coords...);
+}
+
+template <int N, typename T>
 typename Grid<N, T>::iterator Grid<N, T>::begin()
 {
     GridIterator it;
@@ -409,6 +416,21 @@ typename Grid<N, T>::size_type Grid<N, T>::coord_to_index_rec(size_type& agg, Co
 {
     static_assert(DIM == N - 1, "Something is wrong");
     return agg * coord;
+}
+
+template <int N, typename T>
+template <int DIM, typename Coord, typename... CoordTypes>
+bool Grid<N, T>::within_bounds(Coord coord, CoordTypes... coords) const
+{
+    return coord >= 0 && coord < dims_[DIM] && within_bounds<DIM+1>(coords...);
+}
+
+template <int N, typename T>
+template <int DIM, typename Coord>
+bool Grid<N, T>::within_bounds(Coord coord) const
+{
+    static_assert(DIM == N - 1, "Something is wrong");
+    return coord >= 0 && coord < dims_[DIM];
 }
 
 template <int N, typename T, int DIM>

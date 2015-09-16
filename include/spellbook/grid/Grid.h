@@ -94,6 +94,9 @@ public:
     const_reference at(const GridIndex& index) const;
 
     T* data() { return data_; }
+
+    template <typename... CoordTypes>
+    bool within_bounds(CoordTypes... coords) const;
     ///@}
 
     /// \name Iterators
@@ -237,6 +240,12 @@ private:
 
     template <int DIM>
     void assign_sizes(GridIndex& index);
+
+    template <int DIM, typename Coord, typename... CoordTypes>
+    bool within_bounds(Coord coord, CoordTypes... coords) const;
+
+    template <int DIM, typename Coord>
+    bool within_bounds(Coord coord) const;
 
     GridIndex create_last_index() const;
 };
