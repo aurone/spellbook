@@ -62,6 +62,9 @@ public:
     Grid(const Grid& other);
     Grid& operator=(const Grid& rhs);
 
+    Grid(Grid&& other);
+    Grid& operator=(Grid&& rhs);
+
     ~Grid();
 
     /// \name Element access
@@ -115,7 +118,10 @@ public:
     /// \name Modifiers
     ///@{
     void clear();
-    template <typename... SizeTypes> void resize(SizeTypes... sizes);
+
+    template <typename... SizeTypes>
+    void resize(SizeTypes... sizes);
+    
     void assign(const T& value);
     ///@}
 

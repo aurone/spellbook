@@ -95,6 +95,33 @@ Grid<N, T>& Grid<N, T>::operator=(const Grid& rhs)
 }
 
 template <int N, typename T>
+Grid<N, T>::Grid(Grid&& other) :
+    data_(other.data_),
+    dims_()
+{
+    // copy over dimensions
+    memcpy(dims_, other.dims_, N * sizeof(size_type));
+
+    // clear other
+    other.data_ = nullptr;
+    other.clear();
+}
+
+template <int N, typename T>
+Grid<N, T>& Grid<N, T>::operator=(Grid&& rhs)
+{
+    if (this != &rhs) {
+        data_ = rhs.data_;
+        memcpy(dims_, rhs.dims_, N * sizeof(size_type));
+
+        // clear other
+        rhs.data_ = nullptr;
+        rhs.clear();
+    }
+    return *this;
+}
+
+template <int N, typename T>
 Grid<N, T>::~Grid()
 {
     this->clear();
