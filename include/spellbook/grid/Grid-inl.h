@@ -226,19 +226,22 @@ typename Grid<N, T>::iterator Grid<N, T>::end()
 }
 
 template <int N, typename T>
-typename Grid<N, T>::const_iterator Grid<N, T>::begin() const
+const typename Grid<N, T>::GridIterator
+Grid<N, T>::begin() const
 {
     return const_cast<Grid<N, T>*>(this)->begin();
 }
 
 template <int N, typename T>
-typename Grid<N, T>::const_iterator Grid<N, T>::end() const
+const typename Grid<N, T>::GridIterator
+Grid<N, T>::end() const
 {
     return const_cast<Grid<N, T>*>(this)->end();
 }
 
 template <int N, typename T>
-typename Grid<N, T>::iterator Grid<N, T>::grid_begin(const GridIndex& begin, const GridIndex& end)
+typename Grid<N, T>::GridIterator
+Grid<N, T>::grid_begin(const GridIndex& begin, const GridIndex& end)
 {
     GridIterator it;
     it.grid_ = this;
@@ -249,13 +252,15 @@ typename Grid<N, T>::iterator Grid<N, T>::grid_begin(const GridIndex& begin, con
 }
 
 template <int N, typename T>
-typename Grid<N, T>::const_iterator Grid<N, T>::grid_begin(const GridIndex& begin, const GridIndex& end) const
+const typename Grid<N, T>::GridIterator
+Grid<N, T>::grid_begin(const GridIndex& begin, const GridIndex& end) const
 {
     return const_cast<typename Grid<N, T>::const_iterator>(const_cast<Grid<N, T>*>(this)->grid_begin(begin, end));
 }
 
 template <int N, typename T>
-typename Grid<N, T>::iterator Grid<N, T>::grid_end(const GridIndex& begin, const GridIndex& end)
+typename Grid<N, T>::GridIterator
+Grid<N, T>::grid_end(const GridIndex& begin, const GridIndex& end)
 {
     GridIterator it;
     it.grid_ = this;
@@ -267,7 +272,8 @@ typename Grid<N, T>::iterator Grid<N, T>::grid_end(const GridIndex& begin, const
 }
 
 template <int N, typename T>
-typename Grid<N, T>::const_iterator Grid<N, T>::grid_end(const GridIndex& begin, const GridIndex& end) const
+const typename Grid<N, T>::GridIterator
+Grid<N, T>::grid_end(const GridIndex& begin, const GridIndex& end) const
 {
     return const_cast<typename Grid<N, T>::const_iterator>(const_cast<Grid<N, T>*>(this)->grid_end(begin, end));
 }
@@ -422,7 +428,7 @@ template <int N, typename T>
 template <int DIM, typename Coord, typename... CoordTypes>
 bool Grid<N, T>::within_bounds(Coord coord, CoordTypes... coords) const
 {
-    return coord >= 0 && coord < dims_[DIM] && within_bounds<DIM+1>(coords...);
+    return (size_type)coord >= 0 && (size_type)coord < dims_[DIM] && within_bounds<DIM+1>(coords...);
 }
 
 template <int N, typename T>
@@ -430,7 +436,7 @@ template <int DIM, typename Coord>
 bool Grid<N, T>::within_bounds(Coord coord) const
 {
     static_assert(DIM == N - 1, "Something is wrong");
-    return coord >= 0 && coord < dims_[DIM];
+    return (size_type)coord >= 0 && (size_type)coord < dims_[DIM];
 }
 
 template <int N, typename T, int DIM>

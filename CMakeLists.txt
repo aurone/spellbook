@@ -1,30 +1,23 @@
 cmake_minimum_required(VERSION 2.8)
 project(spellbook)
 
-find_package(Boost REQUIRED system thread)
+# Attempt to find Eigen3 through a variety of methods:
 
+# officially supported cmake find module
 find_package(Eigen3)
 if (${EIGEN3_FOUND})
     set(EIGEN_INCLUDES ${EIGEN3_INCLUDE_DIR})
 else()
-    find_package(Eigen REQUIRED)
-    set(EIGEN_INCLUDES ${Eigen_INCLUDE_DIRS})
+    # unofficially suported cmake find module
+    find_package(Eigen)
+    if (${EIGEN_FOUND})
+        set(EIGEN_INCLUDES ${Eigen_INCLUDE_DIRS})
+    else()
+        # pkg-config file
+        find_package(PkgConfig REQUIRED)
+        pkg_check_module(Eigen REQUIRED Eigen3)
+    endif()
 endif()
-
-find_package(PkgConfig REQUIRED)
-
-find_package(catkin REQUIRED)
-
-catkin_package(
-    INCLUDE_DIRS
-        include
-    LIBRARIES
-        mapgen
-    DEPENDS
-        Boost
-        Eigen)
-
-set(BUILD_SHARED_LIBS On)
 
 # inspect for c++11 flags
 if (CMAKE_COMPILER_IS_GNUCXX)
@@ -42,7 +35,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C11_FLAGS}")
 
 set(CMAKE_BUILD_TYPE Release)
 
-include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${Eigen_INCLUDE_DIRS})
 include_directories(include)
 
