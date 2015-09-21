@@ -4,12 +4,12 @@ project(spellbook)
 # Attempt to find Eigen3 through a variety of methods:
 
 # officially supported cmake find module
-find_package(Eigen3)
+find_package(Eigen3 QUIET)
 if (${EIGEN3_FOUND})
     set(EIGEN_INCLUDES ${EIGEN3_INCLUDE_DIR})
 else()
     # unofficially suported cmake find module
-    find_package(Eigen)
+    find_package(Eigen QUIET)
     if (${EIGEN_FOUND})
         set(EIGEN_INCLUDES ${Eigen_INCLUDE_DIRS})
     else()
