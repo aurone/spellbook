@@ -29,6 +29,8 @@
 
 #include "Grid.h"
 
+// standard includes
+#include <string.h>
 #include <iostream>
 #include <sstream>
 

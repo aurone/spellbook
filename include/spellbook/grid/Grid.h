@@ -140,6 +140,22 @@ public:
         size_type& operator()(size_type dim) { return coords_[dim]; }
         const size_type& operator()(size_type dim) const { return coords_[dim]; }
 
+        bool operator<(const GridIndex& rhs) const {
+            for (int i = 0; i < N; ++i) {
+                if (coords_[i] < rhs.coords_[i]) {
+                    return true;
+                }
+                else if (coords_[i] == rhs.coords_[i]) {
+                    // continue on
+                }
+                else {
+                    return false;
+                }
+            }
+
+            return false; // equal
+        }
+
     private:
 
         size_type coords_[N];
