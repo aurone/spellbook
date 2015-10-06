@@ -15,9 +15,10 @@ enable_cxx11()
 
 locate_eigen()
 
-add_subdirectory(src)
+add_subdirectory(spellbook)
+add_subdirectory(test)
 
-set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include")
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/spellbook/src/include")
 configure_file(
     spellbook-config.cmake.in
     "${PROJECT_BINARY_DIR}/spellbook-config.cmake"
