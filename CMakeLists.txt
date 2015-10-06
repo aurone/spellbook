@@ -11,8 +11,5 @@ enable_cxx11()
 
 set(CMAKE_BUILD_TYPE Release)
 
-include_directories(${Eigen_INCLUDE_DIRS})
-include_directories(include)
-
 add_subdirectory(src)
 
