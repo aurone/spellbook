@@ -17,20 +17,20 @@ vec2<T> operator-(const vec2<T>& u, const vec2<T>& v)
     return vec2<T>(u.x - v.x, u.y - v.y);
 }
 
-template <typename T>
-vec2<T> operator*(T c, const vec2<T>& v)
+template <typename T, typename U>
+vec2<T> operator*(U c, const vec2<T>& v)
 {
     return vec2<T>(v.x * c, v.y * c);
 }
 
-template <typename T>
-vec2<T> operator*(const vec2<T>& v, T c)
+template <typename T, typename U>
+vec2<T> operator*(const vec2<T>& v, U c)
 {
     return c * v;
 }
 
-template <typename T>
-vec2<T> operator/(const vec2<T>& v, T c)
+template <typename T, typename U>
+vec2<T> operator/(const vec2<T>& v, U c)
 {
     return v * ((T)1 / c);
 }
@@ -45,6 +45,13 @@ template <typename T>
 T dot(const vec2<T>& u, const vec2<T>& v)
 {
     return u.x * v.x + u.y * v.y;
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& o, const vec2<T>& v)
+{
+    o << "(" << v.x << ", " << v.y << ")";
+    return o;
 }
 
 } // namespace au
