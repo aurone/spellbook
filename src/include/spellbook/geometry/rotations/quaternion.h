@@ -1,56 +1,64 @@
-#ifndef Quaternion_h
-#define Quaternion_h
+#ifndef au_quaternion_h
+#define au_quaternion_h
 
-#include <math.h>
+// standard includes
+#include <ostream>
+
+// project includes
+#include <spellbook/geometry/vector/vec3.h>
 
 namespace au {
 
-template <class T>
+template <typename T>
+struct axis_angle;
+
+template <typename T>
 struct quaternion
 {
     T w, x, y, z;
 
-    quaternion() : w(), x(), y(), z() { }
-
-    quaternion(T w, T x, T y, T, z) : w(w), x(x), y(y), z(z) { }
+    quaternion();
+    quaternion(T w, T x, T y, T z);
+    quaternion(T w, const vec3<T>& v);
+    quaternion(const axis_angle<T>& aa);
 };
 
-template <class T>
-quaternion<T> operator+(const quaternion<T>& p, const quaternion<T>& q)
-{
-    return quaternion<T>(p.w + q.w, p.x + q.x, p.y + q.y, p.z + q.z);
-}
+template <typename T>
+quaternion<T> operator+(const quaternion<T>& p, const quaternion<T>& q);
 
-template <class T>
-quaternion<T> operator*(T w, const quaternion<T>& q)
-{
-    return quaternion<T>(w * q.w, w * q.x, w * q.y, w * q.z);
-}
+template <typename T, typename U>
+quaternion<T> operator*(U w, const quaternion<T>& q);
 
-template <class T>
-quaternion<T> operator*(const quaternion<T>& q, T w)
-{
-    return w * q;
-}
+template <typename T, typename U>
+quaternion<T> operator*(const quaternion<T>& q, U w);
 
-template <class T>
-quaternion<T> operator*(const quaternion<T>& p, const quaternion<T>& q)
-{
+template <typename T, typename U>
+quaternion<T> operator/(const quaternion<T>& q, U w);
 
-}
+template <typename T>
+quaternion<T> operator*(const quaternion<T>& p, const quaternion<T>& q);
 
-template <class T>
-quaternion<T> conjugate(const quaternion<T>& q)
-{
-    return quaternion<T>(q.w, -q.x, -q.y, -q.z);
-}
+template <typename T>
+quaternion<T> conj(const quaternion<T>& q);
 
-template <class T>
-T length(const quaternion<T>& q)
-{
-    return sqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z);
-}
+template <typename T>
+quaternion<T> inv(const quaternion<T>& q);
+
+template <typename T>
+T length(const quaternion<T>& q);
+
+template <typename T>
+T length_sqrd(const quaternion<T>& q);
+
+template <typename T>
+std::ostream& operator<<(std::ostream& o, const quaternion<T>& q);
+
+typedef quaternion<float> quaternionf;
+typedef quaternion<double> quaterniond;
+typedef quaternion<long double> quaternionld;
 
 } // namespace au
+
+#include "detail/quaternion.h"
 
 #endif
