@@ -1,0 +1,44 @@
+#ifndef au_vec_h
+#define au_vec_h
+
+namespace au {
+
+template <typename T>
+struct vec2
+{
+    T x, y;
+
+    vec2() : x(), y() { }
+    vec2(T x, T y) : x(x), y(y) { }
+};
+
+template <typename T>
+vec2<T> operator+(const vec2<T>& u, const vec2<T>& v);
+
+template <typename T>
+vec2<T> operator-(const vec2<T>& u, const vec2<T>& v);
+
+template <typename T>
+vec2<T> operator*(T c, const vec2<T>& v);
+
+template <typename T>
+vec2<T> operator*(const vec2<T>& v, T c);
+
+template <typename T>
+vec2<T> operator/(const vec2<T>& v, T c);
+
+template <typename T>
+T length(const vec2<T>& v);
+
+template <typename T>
+T dot(const vec2<T>& u, const vec2<T>& v);
+
+typedef vec2<float> vec2f;
+typedef vec2<double> vec2d;
+typedef vec2<long double> vec2ld;
+
+} // namespace au
+
+#include "detail/vec2.h"
+
+#endif
