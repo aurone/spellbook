@@ -20,19 +20,19 @@ vec2<T> operator-(const vec2<T>& u, const vec2<T>& v)
 template <typename T, typename U>
 vec2<T> operator*(U c, const vec2<T>& v)
 {
-    return vec2<T>(v.x * c, v.y * c);
+    return vec2<T>(c * v.x, c * v.y);
 }
 
 template <typename T, typename U>
 vec2<T> operator*(const vec2<T>& v, U c)
 {
-    return c * v;
+    return vec2<T>(v.x * c, v.y * c);
 }
 
 template <typename T, typename U>
 vec2<T> operator/(const vec2<T>& v, U c)
 {
-    return v * ((T)1 / c);
+    return vec2<T>(v.x / c, v.y / c);
 }
 
 template <typename T>
