@@ -1,0 +1,16 @@
+# - Config file for the spellbook package
+# It defines the following variables
+# spellbook_INCLUDE_DIRS      - include directories for spellbook
+# spellbook_LIBRARIES         - libraries to link against
+
+# Compute paths
+get_filename_component(SB_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(spellbook_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+#if (NOT TARGET apl AND NOT apl_BINARY_DIR)
+#    include("${SB_CMAKE_DIR}/apl-targets.cmake")
+#endif()
+
+# These are IMPORTED targets created by apl-targets.cmake
+#set(apl_LIBRARIES apl)
