@@ -33,6 +33,9 @@ template <typename T>
 T length(const vec3<T>& v);
 
 template <typename T>
+T length_sqrd(const vec3<T>& v);
+
+template <typename T>
 T dot(const vec3<T>& u, const vec3<T>& v);
 
 template <typename T>

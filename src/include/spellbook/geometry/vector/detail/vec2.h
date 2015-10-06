@@ -38,7 +38,13 @@ vec2<T> operator/(const vec2<T>& v, U c)
 template <typename T>
 T length(const vec2<T>& v)
 {
-    return sqrt(v.x * v.x + v.y * v.y);
+    return sqrt(length_sqrd(v));
+}
+
+template <typename T>
+T length_sqrd(const vec2<T>& v)
+{
+    return v.x * v.x + v.y * v.y;
 }
 
 template <typename T>
