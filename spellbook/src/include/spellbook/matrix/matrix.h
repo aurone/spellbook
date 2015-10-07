@@ -17,6 +17,8 @@ public:
     static const matrix_index NumRows = M;
     static const matrix_index NumCols = N;
 
+    T m_data[M * N];
+
     matrix();
     matrix(T* _data);
 
@@ -28,10 +30,6 @@ public:
 
     const T* data() const;
     T* data();
-
-private:
-
-    T m_data[M * N];
 };
 
 template <typename T, matrix_index M, matrix_index N>
