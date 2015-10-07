@@ -1,6 +1,10 @@
 #ifndef au_detail_rotmat_h
 #define au_detail_rotmat_h
 
+#include <spellbook/geometry/rotations/axis_angle.h>
+#include <spellbook/geometry/rotations/euler_angles.h>
+#include <spellbook/geometry/rotations/quaternion.h>
+
 namespace au {
 
 template <typename T>
@@ -72,6 +76,36 @@ rotmat<T>::rotmat(const axis_angle<T>& aa) :
     (*this)(0, 2) = n13*(1.0 - cth) + n2*sth;
     (*this)(1, 2) = n23*(1.0 - cth) - n1*sth;
     (*this)(2, 2) = n33             + (1 - n33)*cth;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const quaternion<T>& q) :
+    m_mat()
+{
+    const T& q0 = q.w;
+    const T& q1 = q.x;
+    const T& q2 = q.y;
+    const T& q3 = q.z;
+
+    (*this)(0, 0) = q0*q0 + q1*q1 - q2*q2 - q3*q3;
+    (*this)(1, 0) = 2.0*(q0*q3 + q1*q2);
+    (*this)(2, 0) = 2.0*(q1*q3 - q0*q2);
+
+    (*this)(0, 1) = 2.0*(q1*q2 - q0*q3);
+    (*this)(1, 1) = q0*q0 - q1*q1 + q2*q2 - q3*q3;
+    (*this)(2, 1) = 2.0*(q2*q3 + q0*q1);
+
+    (*this)(0, 2) = 2.0*(q1*q3 + q0*q2);
+    (*this)(1, 2) = 2.0*(q2*q3 - q0*q1);
+    (*this)(2, 2) = q0*q0 - q1*q1 - q2*q2 + q3*q3;
+}
+
+template <typename T>
+template <int AngleConvention>
+rotmat<T>::rotmat(const euler_angles<T, AngleConvention>& ea) :
+    m_mat()
+{
+
 }
 
 template <typename T>

@@ -17,7 +17,7 @@ enum class angle_convention
     YZX,
     ZXY,
     ZYX
-}
+};
 
 template <typename T, int AngleConvention = angle_convention::ZYZ>
 struct euler_angles
