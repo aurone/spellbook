@@ -3,6 +3,7 @@ include_directories(include)
 
 add_subdirectory(dubins)
 add_subdirectory(mapgen)
+add_subdirectory(memory)
 
 install(
     DIRECTORY include/spellbook
