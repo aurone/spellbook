@@ -72,6 +72,12 @@ vec2<T> operator/(const vec2<T>& v, U c)
 }
 
 template <typename T>
+vec2<T> operator-(const vec2<T>& v)
+{
+    return vec2<T>(-v.x, -v.y);
+}
+
+template <typename T>
 T length(const vec2<T>& v)
 {
     return v.length();

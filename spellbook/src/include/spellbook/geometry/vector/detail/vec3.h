@@ -72,6 +72,12 @@ vec3<T> operator/(const vec3<T>& v, U c)
 }
 
 template <typename T>
+vec3<T> operator-(const vec3<T>& v)
+{
+    return vec3<T>(-v.x, -v.y, -v.z);
+}
+
+template <typename T>
 T length(const vec3<T>& v)
 {
     return sqrt(length_sqrd(v));

@@ -38,6 +38,9 @@ template <typename T, typename U>
 vec3<T> operator/(const vec3<T>& v, U c);
 
 template <typename T>
+vec3<T> operator-(const vec3<T>& v);
+
+template <typename T>
 T length(const vec3<T>& v);
 
 template <typename T>
