@@ -77,8 +77,8 @@ void TestQuaternion()
     std::cout << "q1 * q2 = " << q1 * q2 << std::endl;
     std::cout << "conj(q1) = " << conj(q1) << std::endl;
     std::cout << "conj(q2) = " << conj(q2) << std::endl;
-    std::cout << "inv(q1) = " << inv(q1) << std::endl;
-    std::cout << "inv(q2) = " << inv(q2) << std::endl;
+    std::cout << "inverse(q1) = " << inverse(q1) << std::endl;
+    std::cout << "inverse(q2) = " << inverse(q2) << std::endl;
     std::cout << "length(q1) = " << length(q1) << std::endl;
     std::cout << "length(q2) = " << length(q2) << std::endl;
 

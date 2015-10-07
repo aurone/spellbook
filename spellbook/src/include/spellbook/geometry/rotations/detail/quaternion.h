@@ -75,7 +75,7 @@ quaternion<T> conj(const quaternion<T>& q)
 }
 
 template <typename T>
-quaternion<T> inv(const quaternion<T>& q)
+quaternion<T> inverse(const quaternion<T>& q)
 {
     return conj(q) / length_sqrd(q);
 }
