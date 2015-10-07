@@ -3,12 +3,26 @@
 
 namespace au {
 
-enum angle_conventions;
-
-template <typename T, int AngleOrder>
-class euler_angles
+enum class angle_convention
 {
+    XYX = 0,
+    XZX,
+    YXY,
+    YZY,
+    ZXZ,
+    ZYZ,
+    XYZ,
+    XZY,
+    YXZ,
+    YZX,
+    ZXY,
+    ZYX
+}
 
+template <typename T, int AngleConvention = angle_convention::ZYZ>
+struct euler_angles
+{
+    T alpha, beta, gamma;
 };
 
 } // namespace au
