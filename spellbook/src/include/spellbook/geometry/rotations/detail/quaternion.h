@@ -22,14 +22,8 @@ quaternion<T>::quaternion(T w, T x, T y, T z) :
 }
 
 template <typename T>
-quaternion<T>::quaternion(T w, const vec3<T>& v)
-    : w(w), x(v.x), y(v.y), z(v.z)
-{
-}
-
-template <typename T>
 quaternion<T>::quaternion(const axis_angle<T>& aa) :
-    w(0.5 * cos(aa.angle)), x(), y(), z()
+    w(), x(), y(), z()
 {
     w = cos(0.5 * aa.angle);
     vec3<T> v = sin(0.5 * aa.angle) * aa.axis;

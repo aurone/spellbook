@@ -19,7 +19,6 @@ struct quaternion
 
     quaternion();
     quaternion(T w, T x, T y, T z);
-    quaternion(T w, const vec3<T>& v);
     quaternion(const axis_angle<T>& aa);
 };
 

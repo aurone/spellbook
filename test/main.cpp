@@ -64,8 +64,8 @@ void TestQuaternion()
     const double angle = M_PI / 4.0;
     const au::vec3d axis(0.0, 0.0, 1.0);
 
-    au::quaterniond q1(cos(angle / 2.0), sin(angle / 2.0) * axis);
-    au::quaterniond q2(cos(-angle / 2.0), sin(-angle / 2.0) * axis);
+    au::quaterniond q1(au::axis_angled(angle, axis));
+    au::quaterniond q2(au::axis_angled(-angle, axis));
 
     std::cout << "q1 = " << q1 << std::endl;
     std::cout << "q2 = " << q2 << std::endl;
@@ -88,6 +88,22 @@ void TestQuaternion()
     std::cout << "aa = " << aa << std::endl;
     std::cout << "(quaternion)aa = " << au::quaterniond(aa) << std::endl;
 
+    {
+        std::cout << au::quaterniond(au::axis_angled(0.0, au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( M_PI,  au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-M_PI, -au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( M_PI,  au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-M_PI, -au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( M_PI,  au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-M_PI, -au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( 0.5 * M_PI,  au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-0.5 * M_PI, -au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( 0.5 * M_PI,  au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-0.5 * M_PI, -au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( 0.5 * M_PI,  au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-0.5 * M_PI, -au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+    }
+
 //    Eigen::Vector3d v; v << 1.0, 0.0, 0.0;
 //
 //    Eigen::AngleAxisd aa(M_PI / 4.0, Eigen::Vector3d(0.0, 0.0, 1.0));
@@ -99,6 +115,10 @@ void TestQuaternion()
 
 void TestMatrix()
 {
+    std::cout << "----------------------" << std::endl;
+    std::cout << "| TestMatrix" << std::endl;
+    std::cout << "----------------------" << std::endl;
+
     std::vector<double> ints(9);
     for (int i = 0; i < 9; ++i) {
         ints[i] = (double)i;
