@@ -6,6 +6,42 @@
 namespace au {
 
 template <typename T>
+void vec2<T>::normalize()
+{
+    *this = *this / length();
+}
+
+template <typename T>
+T vec2<T>::length() const
+{
+    return sqrt(length_sqrd());
+}
+
+template <typename T>
+T vec2<T>::length_sqrd() const
+{
+    return x * x + y * y;
+}
+
+template <typename T>
+T vec2<T>::norm() const
+{
+    return length();
+}
+
+template <typename T>
+T vec2<T>::norm_sqrd() const
+{
+    return length_sqrd();
+}
+
+template <typename T>
+vec2<T> vec2<T>::normalized() const
+{
+    return *this / norm();
+}
+
+template <typename T>
 vec2<T> operator+(const vec2<T>& u, const vec2<T>& v)
 {
     return vec2<T>(u.x + v.x, u.y + v.y);
@@ -38,13 +74,13 @@ vec2<T> operator/(const vec2<T>& v, U c)
 template <typename T>
 T length(const vec2<T>& v)
 {
-    return sqrt(length_sqrd(v));
+    return v.length();
 }
 
 template <typename T>
 T length_sqrd(const vec2<T>& v)
 {
-    return v.x * v.x + v.y * v.y;
+    return v.length_sqrd();
 }
 
 template <typename T>

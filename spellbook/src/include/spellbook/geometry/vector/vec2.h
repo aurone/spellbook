@@ -12,6 +12,14 @@ struct vec2
 
     vec2() : x(), y() { }
     vec2(T x, T y) : x(x), y(y) { }
+
+    void normalize();
+    T length() const;
+    T length_sqrd() const;
+    T norm() const;
+    T norm_sqrd() const;
+
+    vec2<T> normalized() const;
 };
 
 template <typename T>

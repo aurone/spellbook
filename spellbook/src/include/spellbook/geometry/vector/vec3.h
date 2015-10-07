@@ -12,6 +12,14 @@ struct vec3
 
     vec3() : x(), y(), z() { }
     vec3(T x, T y, T z) : x(x), y(y), z(z) { }
+
+    void normalize();
+    T length() const;
+    T length_sqrd() const;
+    T norm() const;
+    T norm_sqrd() const;
+
+    vec3<T> normalized() const;
 };
 
 template <typename T>

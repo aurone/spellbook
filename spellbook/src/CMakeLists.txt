@@ -1,6 +1,7 @@
 include_directories(${Eigen_INCLUDE_DIRS})
 include_directories(include)
 
+add_subdirectory(dubins)
 add_subdirectory(mapgen)
 
 install(

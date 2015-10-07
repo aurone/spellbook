@@ -6,6 +6,42 @@
 namespace au {
 
 template <typename T>
+void vec3<T>::normalize()
+{
+    *this = *this / length();
+}
+
+template <typename T>
+T vec3<T>::length() const
+{
+    return sqrt(length_sqrd());
+}
+
+template <typename T>
+T vec3<T>::length_sqrd() const
+{
+    return x * x + y * y + z * z;
+}
+
+template <typename T>
+T vec3<T>::norm() const
+{
+    return length();
+}
+
+template <typename T>
+T vec3<T>::norm_sqrd() const
+{
+    return length_sqrd();
+}
+
+template <typename T>
+vec3<T> vec3<T>::normalized() const
+{
+    return *this / norm();
+}
+
+template <typename T>
 vec3<T> operator+(const vec3<T>& u, const vec3<T>& v)
 {
     return vec3<T>(u.x + v.x, u.y + v.y, u.z + v.z);
