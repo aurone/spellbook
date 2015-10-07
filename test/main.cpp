@@ -9,6 +9,7 @@
 #include <spellbook/geometry/vector/vec3.h>
 #include <spellbook/geometry/rotations/quaternion.h>
 #include <spellbook/geometry/rotations/axis_angle.h>
+#include <spellbook/geometry/rotations/rotmat.h>
 #include <spellbook/matrix/matrix.h>
 
 void TestVec2()
@@ -139,11 +140,27 @@ void TestMatrix()
     std::cout << "a^T = " << transpose(a) << std::endl;
 }
 
+void TestRotationMatrix()
+{
+    std::cout << "----------------------" << std::endl;
+    std::cout << "| TestRotationMatrix" << std::endl;
+    std::cout << "----------------------" << std::endl;
+
+    au::rotmatd r0(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
+    au::rotmatd r1 = au::axis_angled(-0.5 * M_PI, 0.0, 0.0, 1.0);
+
+    std::cout << "r0 = " << r0 << std::endl;
+    std::cout << "r1 = " << r1 << std::endl;
+    std::cout << "r1 * r0 = " << r1 * r0 << std::endl;
+    std::cout << "r0 * r1 = " << r0 * r1 << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     TestVec2();
     TestVec3();
     TestQuaternion();
     TestMatrix();
+    TestRotationMatrix();
     return 0;
 }
