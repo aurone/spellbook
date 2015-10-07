@@ -13,6 +13,9 @@ template <typename T>
 struct axis_angle;
 
 template <typename T>
+struct rotmat;
+
+template <typename T>
 struct quaternion
 {
     T w, x, y, z;
@@ -20,6 +23,7 @@ struct quaternion
     quaternion();
     quaternion(T w, T x, T y, T z);
     quaternion(const axis_angle<T>& aa);
+    quaternion(const rotmat<T>& r);
 };
 
 template <typename T>
