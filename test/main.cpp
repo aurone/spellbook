@@ -9,6 +9,7 @@
 #include <spellbook/geometry/vector/vec3.h>
 #include <spellbook/geometry/rotations/quaternion.h>
 #include <spellbook/geometry/rotations/axis_angle.h>
+#include <spellbook/matrix/matrix.h>
 
 void TestVec2()
 {
@@ -96,10 +97,33 @@ void TestQuaternion()
 //    std::cout << eq * v << std::endl;
 }
 
+void TestMatrix()
+{
+    std::vector<double> ints(9);
+    for (int i = 0; i < 9; ++i) {
+        ints[i] = (double)i;
+    }
+
+    std::vector<double> bints = ints;
+    std::reverse(bints.begin(), bints.end());
+
+    au::matrix3d a(ints.data());
+    std::cout << "a = " << a << std::endl;
+
+    au::matrix3d b(bints.data());
+    std::cout << "b = " << b << std::endl;
+
+    std::cout << "a + b = " << a + b << std::endl;
+    std::cout << "a - b = " << a - b << std::endl;
+    std::cout << "a * b = " << a * b << std::endl;
+    std::cout << "a^T = " << transpose(a) << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     TestVec2();
     TestVec3();
     TestQuaternion();
+    TestMatrix();
     return 0;
 }
