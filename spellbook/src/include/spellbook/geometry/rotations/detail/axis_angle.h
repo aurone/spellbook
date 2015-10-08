@@ -31,7 +31,7 @@ axis_angle<T>::axis_angle(const quaternion<T>& q) :
     angle(),
     axis()
 {
-    const T ql = length(q);
+    const T ql = sqrt(q.x*q.x + q.y*q.y + q.z*q.z);
     const T qli = 1.0 / ql;
 
     angle = (T)2 * atan2(ql, q.w);

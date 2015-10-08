@@ -159,6 +159,20 @@ void TestRotationMatrix()
     au::quaterniond q(au::axis_angled(0.5 * M_PI, 0.0, 0.0, 1.0));
     std::cout << "q = " << q << std::endl;
     std::cout << au::rotmatd(q) << std::endl;
+
+    au::rotmatd p2(
+            -2.0 / 3.0,  2.0 / 3.0, -1.0 / 3.0,
+            -2.0 / 3.0, -1.0 / 3.0,  2.0 / 3.0,
+             1.0 / 3.0,  2.0 / 3.0,  2.0 / 3.0);
+    p2 = transpose(p2);
+
+    std::cout << au::quaterniond(p2) << std::endl;
+
+    std::cout << au::rotmatd(au::quaterniond(0.408, 0, 0.408, 0.816)) << std::endl;
+    std::cout << au::rotmatd(au::quaterniond(p2)) << std::endl;
+
+    std::cout << au::axis_angled(au::quaterniond(p2)) << std::endl;
+    std::cout << au::quaterniond(au::axis_angled(au::quaterniond(p2))) << std::endl;
 }
 
 int main(int argc, char *argv[])
