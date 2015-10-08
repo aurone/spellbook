@@ -24,6 +24,10 @@ struct quaternion
     quaternion(T w, T x, T y, T z);
     quaternion(const axis_angle<T>& aa);
     quaternion(const rotmat<T>& r);
+
+    T length() const;
+    T length_sqrd() const;
+    void normalize();
 };
 
 template <typename T>

@@ -91,6 +91,28 @@ quaternion<T>::quaternion(const rotmat<T>& r)
 }
 
 template <typename T>
+T quaternion<T>::length() const
+{
+    return sqrt(length_sqrd());
+}
+
+template <typename T>
+T quaternion<T>::length_sqrd() const
+{
+    return w * w + x * x + y * y + z * z;
+}
+
+template <typename T>
+void quaternion<T>::normalize()
+{
+    T l = length();
+    w /= l;
+    x /= l;
+    y /= l;
+    z /= l;
+}
+
+template <typename T>
 quaternion<T> operator+(const quaternion<T>& p, const quaternion<T>& q)
 {
     return quaternion<T>(p.w + q.w, p.x + q.x, p.y + q.y, p.z + q.z);
@@ -147,7 +169,7 @@ T length(const quaternion<T>& q)
 template <typename T>
 T length_sqrd(const quaternion<T>& q)
 {
-    return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z;
+    return q.length_sqrd();
 }
 
 template <typename T>
