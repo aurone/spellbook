@@ -14,4 +14,6 @@ double ShortestAngleDiff(double a1_rad, double a2_rad);
 
 } // namespace au
 
+#include "detail/angles.h"
+
 #endif
