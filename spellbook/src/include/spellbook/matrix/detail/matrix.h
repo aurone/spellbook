@@ -6,6 +6,19 @@
 namespace au {
 
 template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> matrix<T, M, N>::Identity()
+{
+    matrix<T, M, N> m;
+    memset(m.m_data, 0, M * N * sizeof(T));
+
+    for (int i = 0; i < std::min(M, N); ++i) {
+        m(i, i) = 1.0;
+    }
+    
+    return m;
+}
+
+template <typename T, matrix_index M, matrix_index N>
 matrix<T, M, N>::matrix() : m_data() { }
 
 template <typename T, matrix_index M, matrix_index N>

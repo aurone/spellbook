@@ -17,6 +17,8 @@ public:
     static const matrix_index NumRows = M;
     static const matrix_index NumCols = N;
 
+    static matrix Identity();
+
     T m_data[M * N];
 
     matrix();
