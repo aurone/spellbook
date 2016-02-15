@@ -78,7 +78,7 @@ std::ostream& operator<<(std::ostream& o, const Segment2d& s)
 
 double interp_angle(double aa, double ab, double t, AngleDir dir)
 {
-    const double sadist = ShortestAngleDiff(ab, aa);
+    const double sadist = shortest_angle_diff(ab, aa);
 
     double af;
     if (sadist < 0 && dir == AngleDir::CW || sadist > 0 && dir == AngleDir::CCW) {
@@ -93,7 +93,7 @@ double interp_angle(double aa, double ab, double t, AngleDir dir)
         af = aa + t * -signd(sadist) * (2.0 * M_PI - fabs(sadist));
     }
 
-    return NormalizeAngle(af, 0, 2.0 * M_PI);
+    return normalize_angle(af, 0, 2.0 * M_PI);
 }
 
 void compute_turning_circles(
