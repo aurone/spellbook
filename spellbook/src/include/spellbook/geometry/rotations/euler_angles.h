@@ -3,7 +3,8 @@
 
 namespace au {
 
-enum class angle_convention
+namespace angle_convention {
+enum
 {
     XYX = 0,
     XZX,
@@ -18,11 +19,17 @@ enum class angle_convention
     ZXY,
     ZYX
 };
+} // namespace angle_convention
 
 template <typename T, int AngleConvention = angle_convention::ZYZ>
 struct euler_angles
 {
     T alpha, beta, gamma;
+
+    euler_angles() : alpha(), beta(), gamma() { }
+    
+    euler_angles(T alpha, T beta, T gamma) :
+        alpha(alpha), beta(beta), gamma(gamma) { }
 };
 
 } // namespace au

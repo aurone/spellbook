@@ -1,6 +1,8 @@
 #ifndef au_detail_rotmat_h
 #define au_detail_rotmat_h
 
+#include <cmath>
+
 #include <spellbook/geometry/rotations/axis_angle.h>
 #include <spellbook/geometry/rotations/euler_angles.h>
 #include <spellbook/geometry/rotations/quaternion.h>
@@ -101,11 +103,27 @@ rotmat<T>::rotmat(const quaternion<T>& q) :
 }
 
 template <typename T>
-template <int AngleConvention>
-rotmat<T>::rotmat(const euler_angles<T, AngleConvention>& ea) :
+rotmat<T>::rotmat(const euler_angles<T, angle_convention::ZYZ>& ea) :
     m_mat()
 {
+    const T cphi = std::cos(ea.alpha);
+    const T cthe = std::cos(ea.beta);
+    const T cpsi = std::cos(ea.gamma);
+    const T sphi = std::sin(ea.alpha);
+    const T sthe = std::sin(ea.beta);
+    const T spsi = std::sin(ea.gamma);
 
+    m_mat(0, 0) = cphi * cpsi - cthe * sphi * spsi;
+    m_mat(0, 1) = -cpsi * sphi - cphi * cthe * spsi;
+    m_mat(0, 2) = sthe * spsi;
+
+    m_mat(1, 0) = cthe * cpsi * sphi + cphi * spsi;
+    m_mat(1, 1) = cphi * cthe * cpsi - sphi * spsi;
+    m_mat(1, 2) = -cpsi * sthe;
+
+    m_mat(2, 0) = sphi * sthe;
+    m_mat(2, 1) = cphi * sthe;
+    m_mat(2, 2) = cthe;
 }
 
 template <typename T>
