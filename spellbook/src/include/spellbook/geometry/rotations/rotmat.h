@@ -5,6 +5,7 @@
 
 #include <spellbook/matrix/matrix.h>
 #include <spellbook/geometry/vector/vec3.h>
+#include <spellbook/geometry/rotations/euler_angles.h>
 
 namespace au {
 
@@ -25,8 +26,7 @@ struct rotmat
     rotmat(T a11, T a12, T a13, T a21, T a22, T a23, T a31, T a32, T a33);
     rotmat(const axis_angle<T>& aa);
     rotmat(const quaternion<T>& q);
-    template <int AngleConvention>
-    rotmat(const euler_angles<T, AngleConvention>& ea);
+    rotmat(const euler_angles<T, angle_convention::ZYZ>& ea);
 
     T& operator()(matrix_index i, matrix_index j);
     const T& operator()(matrix_index i, matrix_index j) const;

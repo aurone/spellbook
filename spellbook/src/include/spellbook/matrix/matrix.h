@@ -64,6 +64,10 @@ matrix<T, N, M> transpose(const matrix<T, M, N>& m);
 template <typename T, matrix_index M, matrix_index N>
 std::ostream& operator<<(std::ostream& o, const matrix<T, M, N>& m);
 
+template <typename T> using matrix2 = matrix<T, 2, 2>;
+template <typename T> using matrix3 = matrix<T, 3, 3>;
+template <typename T> using matrix4 = matrix<T, 4, 4>;
+
 typedef matrix<float, 1, 1> matrix1f;
 typedef matrix<float, 2, 2> matrix2f;
 typedef matrix<float, 3, 3> matrix3f;
