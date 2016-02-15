@@ -3,6 +3,8 @@
 
 #include <ostream>
 
+#include <spellbook/matrix/matrix.h>
+
 namespace au {
 
 template <typename T>
@@ -51,6 +53,9 @@ T dot(const vec3<T>& u, const vec3<T>& v);
 
 template <typename T>
 vec3<T> cross(const vec3<T>& u, const vec3<T>& v);
+
+template <typename U, typename V>
+vec3<decltype(U()*V())> operator*(const matrix3<U>& m, const vec3<V>& v);
 
 template <typename T>
 std::ostream& operator<<(std::ostream& o, const vec3<T>& v);
