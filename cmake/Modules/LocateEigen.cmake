@@ -1,6 +1,6 @@
 macro(locate_eigen)
     # Attempt to find Eigen3 through a variety of methods:
-    
+
     # check for officially supported cmake find module
     find_package(Eigen3 QUIET)
     if (${EIGEN3_FOUND})
@@ -13,7 +13,7 @@ macro(locate_eigen)
         else()
             # check for officially supported pkg-config file
             find_package(PkgConfig REQUIRED)
-            pkg_check_module(Eigen REQUIRED Eigen3)
+            pkg_check_modules(Eigen REQUIRED Eigen3)
         endif()
     endif()
 endmacro()
