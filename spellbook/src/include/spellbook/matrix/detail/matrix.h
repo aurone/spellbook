@@ -14,7 +14,7 @@ matrix<T, M, N> matrix<T, M, N>::Identity()
     for (int i = 0; i < std::min(M, N); ++i) {
         m(i, i) = 1.0;
     }
-    
+
     return m;
 }
 
@@ -136,6 +136,77 @@ matrix<T, N, M> transpose(const matrix<T, M, N>& m)
         }
     }
     return out;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, N, M> inverse(const matrix<T, M, N>& m)
+{
+    // TODO: implement generic inverse computation
+    matrix<T, N, M> out;
+    return out;
+}
+
+template <typename T>
+matrix2<T> inverse(const matrix2<T>& m)
+{
+    const T& a11 = m(0, 0);
+    const T& a12 = m(0, 1);
+    const T& a21 = m(1, 0);
+    const T& a22 = m(1, 1);
+
+    au::matrix2<T> Ainv;
+    const T d = a11 * a22 - a12 * a21;
+
+    // TODO: raise error if non-invertible
+    const T dinv = 1.0 / d;
+    Ainv(0, 0) = dinv * a22;
+    Ainv(0, 1) = dinv * -a12;
+    Ainv(1, 0) = dinv * -a21;
+    Ainv(1, 1) = dinv * a11;
+    return Ainv;
+}
+
+template <typename T>
+matrix3<T> inverse(const matrix3<T>& m)
+{
+    const T& a11 = m(0, 0);
+    const T& a12 = m(0, 1);
+    const T& a13 = m(0, 2);
+    const T& a21 = m(1, 0);
+    const T& a22 = m(1, 1);
+    const T& a23 = m(1, 2);
+    const T& a31 = m(2, 0);
+    const T& a32 = m(2, 1);
+    const T& a33 = m(2, 2);
+
+    const T d =
+            a11 * (a22 * a33 - a32 * a23) -
+            a12 * (a21 * a33 - a23 * a31) +
+            a13 * (a21 * a32 - a22 * a31);
+
+    // TODO: raise error if non-invertible
+    const T dinv = 1.0 / d;
+    const T ap11 = a22 * a33 - a23 * a32;
+    const T ap12 = a13 * a32 - a12 * a33;
+    const T ap13 = a12 * a23 - a13 * a22;
+    const T ap21 = a23 * a31 - a21 * a33;
+    const T ap22 = a11 * a33 - a13 * a31;
+    const T ap23 = a13 * a21 - a11 * a23;
+    const T ap31 = a21 * a32 - a22 * a31;
+    const T ap32 = a12 * a31 - a11 * a32;
+    const T ap33 = a11 * a22 - a12 * a21;
+
+    au::matrix3<T> Ainv;
+    Ainv(0, 0) = dinv * ap11;
+    Ainv(0, 1) = dinv * ap12;
+    Ainv(0, 2) = dinv * ap13;
+    Ainv(1, 0) = dinv * ap21;
+    Ainv(1, 1) = dinv * ap22;
+    Ainv(1, 2) = dinv * ap23;
+    Ainv(2, 0) = dinv * ap31;
+    Ainv(2, 1) = dinv * ap32;
+    Ainv(2, 2) = dinv * ap33;
+    return Ainv;
 }
 
 template <typename T, matrix_index M, matrix_index N>

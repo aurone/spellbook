@@ -62,6 +62,9 @@ template <typename T, matrix_index M, matrix_index N>
 matrix<T, N, M> transpose(const matrix<T, M, N>& m);
 
 template <typename T, matrix_index M, matrix_index N>
+matrix<T, N, M> inverse(const matrix<T, M, N>& m);
+
+template <typename T, matrix_index M, matrix_index N>
 std::ostream& operator<<(std::ostream& o, const matrix<T, M, N>& m);
 
 template <typename T> using matrix2 = matrix<T, 2, 2>;
