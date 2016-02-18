@@ -1,6 +1,8 @@
 #ifndef au_euler_angles_h
 #define au_euler_angles_h
 
+#include <ostream>
+
 namespace au {
 
 namespace angle_convention {
@@ -54,10 +56,15 @@ using yxz_angles = euler_angles<T, angle_convention::YXZ>;
 template <typename T>
 using yzx_angles = euler_angles<T, angle_convention::YZX>;
 template <typename T>
-using xzy_angles = euler_angles<T, angle_convention::XZY>;
+using zxy_angles = euler_angles<T, angle_convention::ZXY>;
 template <typename T>
 using zyx_angles = euler_angles<T, angle_convention::ZYX>;
 
+template <typename T, int AngleConvention>
+std::ostream& operator<<(std::ostream& o, const euler_angles<T, AngleConvention>& v);
+
 } // namespace au
+
+#include "detail/euler_angles.h"
 
 #endif
