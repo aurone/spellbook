@@ -1,6 +1,8 @@
 #ifndef au_vec4_h
 #define au_vec4_h
 
+#include <ostream>
+
 namespace au {
 
 template <typename T>
@@ -16,6 +18,11 @@ typedef vec4<float> vec4f;
 typedef vec4<double> vec4d;
 typedef vec4<long double> vec4ld;
 
+template <typename T>
+std::ostream& operator<<(std::ostream& o, const vec4<T>& v);
+
 } // namespace au
+
+#include "detail/vec4.h"
 
 #endif
