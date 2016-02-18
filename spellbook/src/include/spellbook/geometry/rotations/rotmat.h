@@ -26,12 +26,20 @@ struct rotmat
     rotmat(T a11, T a12, T a13, T a21, T a22, T a23, T a31, T a32, T a33);
     rotmat(const axis_angle<T>& aa);
     rotmat(const quaternion<T>& q);
+
     rotmat(const xzx_angles<T>& ea);
     rotmat(const xyx_angles<T>& ea);
     rotmat(const yxy_angles<T>& ea);
     rotmat(const yzy_angles<T>& ea);
     rotmat(const zyz_angles<T>& ea);
     rotmat(const zxz_angles<T>& ea);
+
+    rotmat(const xzy_angles<T>& ea);
+    rotmat(const xyz_angles<T>& ea);
+    rotmat(const yxz_angles<T>& ea);
+    rotmat(const yzx_angles<T>& ea);
+    rotmat(const zyx_angles<T>& ea);
+    rotmat(const zxy_angles<T>& ea);
 
     T& operator()(matrix_index i, matrix_index j);
     const T& operator()(matrix_index i, matrix_index j) const;
