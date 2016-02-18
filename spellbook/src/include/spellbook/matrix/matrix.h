@@ -22,7 +22,7 @@ public:
     T m_data[M * N];
 
     matrix();
-    matrix(T* _data);
+    matrix(const T* _data);
 
     T& operator()(matrix_index i, matrix_index j);
     const T& operator()(matrix_index i, matrix_index j) const;

@@ -22,7 +22,7 @@ template <typename T, matrix_index M, matrix_index N>
 matrix<T, M, N>::matrix() : m_data() { }
 
 template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N>::matrix(T* _data) : m_data()
+matrix<T, M, N>::matrix(const T* _data) : m_data()
 {
     memcpy(m_data, _data, sizeof(T) * M * N);
 }
@@ -37,6 +37,18 @@ template <typename T, matrix_index M, matrix_index N>
 const T& matrix<T, M, N>::operator()(matrix_index i, matrix_index j) const
 {
     return m_data[i * M + j];
+}
+
+template <typename T, matrix_index M, matrix_index N>
+T& matrix<T, M, N>::operator[](matrix_index i)
+{
+    return m_data[i];
+}
+
+template <typename T, matrix_index M, matrix_index N>
+const T& matrix<T, M, N>::operator[](matrix_index i) const
+{
+    return m_data[i];
 }
 
 template <typename T, matrix_index M, matrix_index N>
