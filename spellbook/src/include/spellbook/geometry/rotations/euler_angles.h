@@ -5,6 +5,9 @@
 
 namespace au {
 
+template <typename T>
+class rotmat;
+
 namespace angle_convention {
 enum
 {
@@ -23,7 +26,7 @@ enum
 };
 } // namespace angle_convention
 
-template <typename T, int AngleConvention = angle_convention::ZYZ>
+template <typename T, int AngleConvention>
 struct euler_angles
 {
     T alpha, beta, gamma;
@@ -33,6 +36,8 @@ struct euler_angles
     euler_angles(T alpha, T beta, T gamma) :
         alpha(alpha), beta(beta), gamma(gamma)
     { }
+
+    euler_angles(const rotmat<T>& R);
 };
 
 template <typename T>
