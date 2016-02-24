@@ -30,13 +30,13 @@ matrix<T, M, N>::matrix(const T* _data) : m_data()
 template <typename T, matrix_index M, matrix_index N>
 T& matrix<T, M, N>::operator()(matrix_index i, matrix_index j)
 {
-    return m_data[i * M + j];
+    return m_data[i * N + j];
 }
 
 template <typename T, matrix_index M, matrix_index N>
 const T& matrix<T, M, N>::operator()(matrix_index i, matrix_index j) const
 {
-    return m_data[i * M + j];
+    return m_data[i * N + j];
 }
 
 template <typename T, matrix_index M, matrix_index N>
