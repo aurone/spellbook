@@ -65,6 +65,26 @@ using zxy_angles = euler_angles<T, angle_convention::ZXY>;
 template <typename T>
 using zyx_angles = euler_angles<T, angle_convention::ZYX>;
 
+#define DECLARE_EA_TYPEDEFS(base) \
+typedef base<float> base##f;\
+typedef base<double> base##d;\
+typedef base<long double> base##ld;
+
+DECLARE_EA_TYPEDEFS(xyx_angles);
+DECLARE_EA_TYPEDEFS(xzx_angles);
+DECLARE_EA_TYPEDEFS(yxy_angles);
+DECLARE_EA_TYPEDEFS(yzy_angles);
+DECLARE_EA_TYPEDEFS(zxz_angles);
+DECLARE_EA_TYPEDEFS(zyz_angles);
+DECLARE_EA_TYPEDEFS(xyz_angles);
+DECLARE_EA_TYPEDEFS(xzy_angles);
+DECLARE_EA_TYPEDEFS(yxz_angles);
+DECLARE_EA_TYPEDEFS(yzx_angles);
+DECLARE_EA_TYPEDEFS(zxy_angles);
+DECLARE_EA_TYPEDEFS(zyx_angles);
+
+#undef DECLARE_EA_TYPEDEFS
+
 template <typename T, int AngleConvention>
 std::ostream& operator<<(std::ostream& o, const euler_angles<T, AngleConvention>& v);
 
