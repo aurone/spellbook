@@ -68,24 +68,45 @@ matrix<T, N, M> inverse(const matrix<T, M, N>& m);
 template <typename T, matrix_index M, matrix_index N>
 std::ostream& operator<<(std::ostream& o, const matrix<T, M, N>& m);
 
+template <typename T> using matrix1 = matrix<T, 1, 1>;
 template <typename T> using matrix2 = matrix<T, 2, 2>;
 template <typename T> using matrix3 = matrix<T, 3, 3>;
 template <typename T> using matrix4 = matrix<T, 4, 4>;
+template <typename T> using vector1 = matrix<T, 1, 1>;
+template <typename T> using vector2 = matrix<T, 2, 1>;
+template <typename T> using vector3 = matrix<T, 3, 1>;
+template <typename T> using vector4 = matrix<T, 4, 1>;
 
-typedef matrix<float, 1, 1> matrix1f;
-typedef matrix<float, 2, 2> matrix2f;
-typedef matrix<float, 3, 3> matrix3f;
-typedef matrix<float, 4, 4> matrix4f;
+typedef matrix1<float> matrix1f;
+typedef matrix2<float> matrix2f;
+typedef matrix3<float> matrix3f;
+typedef matrix4<float> matrix4f;
 
-typedef matrix<double, 1, 1> matrix1d;
-typedef matrix<double, 2, 2> matrix2d;
-typedef matrix<double, 3, 3> matrix3d;
-typedef matrix<double, 4, 4> matrix4d;
+typedef matrix1<double> matrix1d;
+typedef matrix2<double> matrix2d;
+typedef matrix3<double> matrix3d;
+typedef matrix4<double> matrix4d;
 
-typedef matrix<long double, 1, 1> matrix1ld;
-typedef matrix<long double, 2, 2> matrix2ld;
-typedef matrix<long double, 3, 3> matrix3ld;
-typedef matrix<long double, 4, 4> matrix4ld;
+typedef matrix1<long double> matrix1ld;
+typedef matrix2<long double> matrix2ld;
+typedef matrix3<long double> matrix3ld;
+typedef matrix4<long double> matrix4ld;
+
+typedef vector1<float> vector1f;
+typedef vector2<float> vector2f;
+typedef vector3<float> vector3f;
+typedef vector4<float> vector4f;
+
+typedef vector1<double> vector1d;
+typedef vector2<double> vector2d;
+typedef vector3<double> vector3d;
+typedef vector4<double> vector4d;
+
+typedef vector1<long double> vector1ld;
+typedef vector2<long double> vector2ld;
+typedef vector3<long double> vector3ld;
+typedef vector4<long double> vector4ld;
+
 struct matrix_exception : public std::logic_error
 {
     explicit matrix_exception(const std::string& what_arg);
