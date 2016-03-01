@@ -235,6 +235,9 @@ std::ostream& operator<<(std::ostream& o, const matrix<T, M, N>& m)
         if (i != M - 1) {
             o << "; ";
         }
+        else {
+            o << " ";
+        }
     }
     o << "]";
     return o;
