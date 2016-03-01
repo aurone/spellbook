@@ -221,6 +221,56 @@ matrix3<T> inverse(const matrix3<T>& m)
     return Ainv;
 }
 
+template <typename T, matrix_index N>
+matrix<T, N, 1> linsolve(const matrix<T, N, N>& A, const matrix<T, N, 1>& b)
+{
+    matrix<T, N, N> Ac(A);
+    matrix<T, N, 1> bc(b);
+
+    for (matrix_index j = 0; j < N; ++j) {
+        // check for singularity
+        bool singular = true;
+        for (matrix_index k = j; singular && k < N; ++k) {
+            if (Ac(k, j) != 0.0) {
+                singular = false;
+            }
+        }
+
+        if (singular) {
+            throw matrix_exception("singular matrix");
+        }
+
+        // check for permutation
+        if (Ac(j, j) == 0.0) {
+            for (matrix_index k = j + 1; k < N; ++k) {
+                if (Ac(k, j) != 0.0) {
+                    // swap rows k and j
+                    for (matrix_index l = 0; l < N; ++l) {
+                        T tmp;
+                        tmp = Ac(k, l);
+                        Ac(k, l) = Ac(j, l);
+                        Ac(j, l) = tmp;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // proceed as normal
+        for (matrix_index i = j + 1; i < N; ++i) {
+            const T lij = Ac(i, j) / Ac(j, j);
+
+            for (matrix_index k = 0; k < N; ++k) {
+                Ac(i, k) += -lij * Ac(j, k);
+            }
+
+            bc(i, 0) += -lij * bc(j, 0);
+        }
+    }
+
+    return matrix<T, N, 1>();
+}
+
 template <typename T, matrix_index M, matrix_index N>
 std::ostream& operator<<(std::ostream& o, const matrix<T, M, N>& m)
 {
