@@ -4,6 +4,7 @@
 // standard includes
 #include <stdlib.h>
 #include <ostream>
+#include <stdexcept>
 
 namespace au {
 
@@ -85,6 +86,11 @@ typedef matrix<long double, 1, 1> matrix1ld;
 typedef matrix<long double, 2, 2> matrix2ld;
 typedef matrix<long double, 3, 3> matrix3ld;
 typedef matrix<long double, 4, 4> matrix4ld;
+struct matrix_exception : public std::logic_error
+{
+    explicit matrix_exception(const std::string& what_arg);
+    explicit matrix_exception(const char* what_arg);
+};
 
 } // namespace au
 

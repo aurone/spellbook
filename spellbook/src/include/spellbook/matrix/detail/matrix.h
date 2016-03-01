@@ -240,6 +240,14 @@ std::ostream& operator<<(std::ostream& o, const matrix<T, M, N>& m)
     return o;
 }
 
+matrix_exception::matrix_exception(const std::string& what_arg) :
+    logic_error(what_arg)
+{ }
+
+matrix_exception::matrix_exception(const char* what_arg) :
+    logic_error(what_arg)
+{ }
+
 } // namespace au
 
 #endif
