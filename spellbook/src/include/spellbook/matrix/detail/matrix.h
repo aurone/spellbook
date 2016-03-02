@@ -2,6 +2,7 @@
 #define au_detail_matrix_h
 
 #include <string.h>
+#include <iostream>
 
 namespace au {
 
@@ -22,10 +23,38 @@ template <typename T, matrix_index M, matrix_index N>
 matrix<T, M, N>::matrix() : m_data() { }
 
 template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N>::matrix(const T* _data) : m_data()
+template <typename U>
+matrix<T, M, N>::matrix(std::initializer_list<U> init) :
+    m_data()
 {
-    memcpy(m_data, _data, sizeof(T) * M * N);
+    typename std::initializer_list<U>::size_type count;
+    count = std::min(init.size(), M * N);
+    auto it = init.begin();
+    for (typename std::initializer_list<U>::size_type i = 0; i < count; ++i) {
+        m_data[i] = (T)*it;
+        ++it;
+    }
 }
+
+template <typename T, matrix_index M, matrix_index N>
+template <typename InputIt>
+matrix<T, M, N>::matrix(InputIt first, InputIt last) :
+    m_data()
+{
+    std::cout << "ok" << std::endl;
+}
+
+//template <typename T, matrix_index M, matrix_index N>
+//matrix<T, M, N>::matrix(T* _data) : m_data()
+//{
+//    memcpy(m_data, _data, sizeof(T) * M * N);
+//}
+//
+//template <typename T, matrix_index M, matrix_index N>
+//matrix<T, M, N>::matrix(const T* _data) : m_data()
+//{
+//    memcpy(m_data, _data, sizeof(T) * M * N);
+//}
 
 template <typename T, matrix_index M, matrix_index N>
 T& matrix<T, M, N>::operator()(matrix_index i, matrix_index j)

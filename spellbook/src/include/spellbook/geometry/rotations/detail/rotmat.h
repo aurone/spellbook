@@ -19,15 +19,15 @@ template <typename T>
 rotmat<T>::rotmat(const vec3<T>& _u1, const vec3<T>& _u2, const vec3<T>& _u3) :
     m_mat()
 {
-    m_mat.m_data[0] = _u1.x;
-    m_mat.m_data[1] = _u1.y;
-    m_mat.m_data[2] = _u1.z;
-    m_mat.m_data[3] = _u2.x;
-    m_mat.m_data[4] = _u2.y;
-    m_mat.m_data[5] = _u2.z;
-    m_mat.m_data[6] = _u3.x;
-    m_mat.m_data[7] = _u3.y;
-    m_mat.m_data[8] = _u3.z;
+    m_mat[0] = _u1.x;
+    m_mat[1] = _u1.y;
+    m_mat[2] = _u1.z;
+    m_mat[3] = _u2.x;
+    m_mat[4] = _u2.y;
+    m_mat[5] = _u2.z;
+    m_mat[6] = _u3.x;
+    m_mat[7] = _u3.y;
+    m_mat[8] = _u3.z;
 }
 
 template <typename T>
@@ -38,15 +38,15 @@ rotmat<T>::rotmat(
 :
     m_mat()
 {
-    m_mat.m_data[0] = a11;
-    m_mat.m_data[1] = a21;
-    m_mat.m_data[2] = a31;
-    m_mat.m_data[3] = a12;
-    m_mat.m_data[4] = a22;
-    m_mat.m_data[5] = a32;
-    m_mat.m_data[6] = a13;
-    m_mat.m_data[7] = a23;
-    m_mat.m_data[8] = a33;
+    m_mat[0] = a11;
+    m_mat[1] = a21;
+    m_mat[2] = a31;
+    m_mat[3] = a12;
+    m_mat[4] = a22;
+    m_mat[5] = a32;
+    m_mat[6] = a13;
+    m_mat[7] = a23;
+    m_mat[8] = a33;
 }
 
 template <typename T>
@@ -417,19 +417,19 @@ T* rotmat<T>::data()
 template <typename T>
 const vec3<T>& rotmat<T>::u1() const
 {
-    return reinterpret_cast<const vec3<T>&>(m_mat.m_data[0]);
+    return reinterpret_cast<const vec3<T>&>(m_mat.data()[0]);
 }
 
 template <typename T>
 const vec3<T>& rotmat<T>::u2() const
 {
-    return reinterpret_cast<const vec3<T>&>(m_mat.m_data[3]);
+    return reinterpret_cast<const vec3<T>&>(m_mat.data()[3]);
 }
 
 template <typename T>
 const vec3<T>& rotmat<T>::u3() const
 {
-    return reinterpret_cast<const vec3<T>&>(m_mat.m_data[6]);
+    return reinterpret_cast<const vec3<T>&>(m_mat.data()[6]);
 }
 
 template <typename T>

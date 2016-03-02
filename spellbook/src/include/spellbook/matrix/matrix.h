@@ -3,27 +3,34 @@
 
 // standard includes
 #include <stdlib.h>
+#include <initializer_list>
 #include <ostream>
 #include <stdexcept>
 
 namespace au {
 
-typedef int matrix_index;
+typedef size_t matrix_index;
 
 template <typename T, matrix_index M, matrix_index N>
 class matrix
 {
 public:
 
+    typedef T value_type;
+    typedef size_t size_type;
+
     static const matrix_index NumRows = M;
     static const matrix_index NumCols = N;
 
     static matrix Identity();
 
-    T m_data[M * N];
-
     matrix();
-    matrix(const T* _data);
+
+    template <typename U>
+    matrix(std::initializer_list<U> init);
+
+    template <typename InputIt>
+    matrix(InputIt first, InputIt last);
 
     T& operator()(matrix_index i, matrix_index j);
     const T& operator()(matrix_index i, matrix_index j) const;
@@ -33,6 +40,10 @@ public:
 
     const T* data() const;
     T* data();
+
+private:
+
+    T m_data[M * N];
 };
 
 template <typename T, matrix_index M, matrix_index N>
