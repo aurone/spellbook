@@ -28,6 +28,12 @@ public:
 
     matrix();
 
+    template <typename U>
+    matrix(std::initializer_list<U> init);
+
+    template <typename InputIt>
+    matrix(InputIt first, InputIt last);
+
     // assignment operators
     template <typename U> matrix& operator+=(U c);
     template <typename U> matrix& operator+=(const matrix<U, M, N>& rhs);
@@ -36,12 +42,6 @@ public:
     template <typename U> matrix& operator*=(U c);
     template <typename U> matrix& operator*=(const matrix<U, N, N>& rhs);
     template <typename U> matrix& operator/=(U c);
-
-    template <typename U>
-    matrix(std::initializer_list<U> init);
-
-    template <typename InputIt>
-    matrix(InputIt first, InputIt last);
 
     T& operator()(matrix_index i, matrix_index j);
     const T& operator()(matrix_index i, matrix_index j) const;
