@@ -7,7 +7,7 @@
 namespace au {
 
 template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N> matrix<T, M, N>::Identity()
+matrix<T, M, N> matrix<T, M, N>::identity()
 {
     matrix<T, M, N> m;
     memset(m.m_data, 0, M * N * sizeof(T));
@@ -16,6 +16,24 @@ matrix<T, M, N> matrix<T, M, N>::Identity()
         m(i, i) = 1.0;
     }
 
+    return m;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> matrix<T, M, N>::zeros()
+{
+    matrix<T, M, N> m;
+    memset(m.m_data, 0, M * N * sizeof(T));
+    return m;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> matrix<T, M, N>::ones()
+{
+    matrix<T, M, N> m;
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m.m_data[i] = (T)1;
+    }
     return m;
 }
 
@@ -53,17 +71,73 @@ matrix<T, M, N>::matrix(InputIt first, InputIt last) :
     }
 }
 
-//template <typename T, matrix_index M, matrix_index N>
-//matrix<T, M, N>::matrix(T* _data) : m_data()
-//{
-//    memcpy(m_data, _data, sizeof(T) * M * N);
-//}
-//
-//template <typename T, matrix_index M, matrix_index N>
-//matrix<T, M, N>::matrix(const T* _data) : m_data()
-//{
-//    memcpy(m_data, _data, sizeof(T) * M * N);
-//}
+template <typename T, matrix_index M, matrix_index N>
+template <typename U>
+matrix<T, M, N>& matrix<T, M, N>::operator+=(U c)
+{
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m_data[i] += c;
+    }
+    return *this;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+template <typename U>
+matrix<T, M, N>& matrix<T, M, N>::operator+=(const matrix<U, M, N>& rhs)
+{
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m_data[i] += rhs.m_data[i];
+    }
+    return *this;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+template <typename U>
+matrix<T, M, N>& matrix<T, M, N>::operator-=(U c)
+{
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m_data[i] -= c;
+    }
+    return *this;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+template <typename U>
+matrix<T, M, N>& matrix<T, M, N>::operator-=(const matrix<U, M, N>& rhs)
+{
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m_data[i] -= rhs.m_data[i];
+    }
+    return *this;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+template <typename U>
+matrix<T, M, N>& matrix<T, M, N>::operator*=(U c)
+{
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m_data[i] *= c;
+    }
+    return *this;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+template <typename U>
+matrix<T, M, N>& matrix<T, M, N>::operator*=(const matrix<U, N, N>& rhs)
+{
+    *this = (*this * rhs);
+    return *this;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+template <typename U>
+matrix<T, M, N>& matrix<T, M, N>::operator/=(U c)
+{
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m_data[i] /= c;
+    }
+    return *this;
+}
 
 template <typename T, matrix_index M, matrix_index N>
 T& matrix<T, M, N>::operator()(matrix_index i, matrix_index j)
@@ -99,6 +173,22 @@ template <typename T, matrix_index M, matrix_index N>
 T* matrix<T, M, N>::data()
 {
     return m_data;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> operator+(const matrix<T, M, N>& a)
+{
+    return a;
+}
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> operator-(const matrix<T, M, N>& a)
+{
+    au::matrix3d m;
+    for (matrix_index i = 0; i < M * N; ++i) {
+        m[i] = -a[i];
+    }
+    return m;
 }
 
 template <typename T, matrix_index M, matrix_index N>

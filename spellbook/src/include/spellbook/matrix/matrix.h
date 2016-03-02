@@ -19,12 +19,23 @@ public:
     typedef T value_type;
     typedef size_t size_type;
 
-    static const matrix_index NumRows = M;
-    static const matrix_index NumCols = N;
+    static const matrix_index row_count = M;
+    static const matrix_index col_count = N;
 
-    static matrix Identity();
+    static matrix identity();
+    static matrix zeros();
+    static matrix ones();
 
     matrix();
+
+    // assignment operators
+    template <typename U> matrix& operator+=(U c);
+    template <typename U> matrix& operator+=(const matrix<U, M, N>& rhs);
+    template <typename U> matrix& operator-=(U c);
+    template <typename U> matrix& operator-=(const matrix<U, M, N>& rhs);
+    template <typename U> matrix& operator*=(U c);
+    template <typename U> matrix& operator*=(const matrix<U, N, N>& rhs);
+    template <typename U> matrix& operator/=(U c);
 
     template <typename U>
     matrix(std::initializer_list<U> init);
@@ -46,29 +57,33 @@ private:
     T m_data[M * N];
 };
 
-template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N>
-operator+(const matrix<T, M, N>& a, const matrix<T, M, N>& b);
+//////////////////////////
+// arithmetic operators //
+//////////////////////////
 
 template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N>
-operator-(const matrix<T, M, N>& a, const matrix<T, M, N>& b);
+matrix<T, M, N> operator+(const matrix<T, M, N>& a);
 
 template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N>
-operator*(T c, const matrix<T, M, N>& m);
+matrix<T, M, N> operator-(const matrix<T, M, N>& a);
 
 template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N>
-operator*(const matrix<T, M, N>& m, T c);
+matrix<T, M, N> operator+(const matrix<T, M, N>& a, const matrix<T, M, N>& b);
 
 template <typename T, matrix_index M, matrix_index N>
-matrix<T, M, N>
-operator/(const matrix<T, M, N>& m, T c);
+matrix<T, M, N> operator-(const matrix<T, M, N>& a, const matrix<T, M, N>& b);
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> operator*(T c, const matrix<T, M, N>& m);
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> operator*(const matrix<T, M, N>& m, T c);
+
+template <typename T, matrix_index M, matrix_index N>
+matrix<T, M, N> operator/(const matrix<T, M, N>& m, T c);
 
 template <typename T, matrix_index M, matrix_index N, matrix_index K>
-matrix<T, M, K>
-operator*(const matrix<T, M, N>& a, const matrix<T, N, K>& b);
+matrix<T, M, K> operator*(const matrix<T, M, N>& a, const matrix<T, N, K>& b);
 
 template <typename T, matrix_index M, matrix_index N>
 matrix<T, N, M> transpose(const matrix<T, M, N>& m);
