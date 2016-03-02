@@ -41,7 +41,16 @@ template <typename InputIt>
 matrix<T, M, N>::matrix(InputIt first, InputIt last) :
     m_data()
 {
-    std::cout << "ok" << std::endl;
+    size_type count = M * N;
+    auto dist = std::distance(first, last);
+    if (dist < count) {
+        count = dist;
+    }
+    auto it = first;
+    for (decltype(count) i = 0; i < count; ++i) {
+        m_data[i] = (T)*it;
+        ++it;
+    }
 }
 
 //template <typename T, matrix_index M, matrix_index N>
@@ -256,6 +265,7 @@ matrix<T, N, 1> linsolve(const matrix<T, N, N>& A, const matrix<T, N, 1>& b)
     matrix<T, N, N> Ac(A);
     matrix<T, N, 1> bc(b);
 
+    // convert to an upper-triangular system
     for (matrix_index j = 0; j < N; ++j) {
         // check for singularity
         bool singular = true;
@@ -297,7 +307,21 @@ matrix<T, N, 1> linsolve(const matrix<T, N, N>& A, const matrix<T, N, 1>& b)
         }
     }
 
-    return matrix<T, N, 1>();
+    matrix<T, N, 1> x;
+    for (matrix_index i = N - 1; i > 0; --i) {
+        x[i] = bc[i];
+        for (matrix_index j = i + 1; j < N; ++j) {
+            x[i] -= Ac(i, j) * x[j];
+        }
+        x[i] /= Ac(i, i);
+    }
+    x[0] = bc[0];
+    for (matrix_index j = 1; j < N; ++j) {
+        x[0] -= Ac(0, j) * x[j];
+    }
+    x[0] /= Ac(0, 0);
+
+    return x;
 }
 
 template <typename T, matrix_index M, matrix_index N>

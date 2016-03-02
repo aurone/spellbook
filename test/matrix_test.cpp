@@ -30,6 +30,11 @@ BOOST_AUTO_TEST_CASE(MatrixConstructionTest)
     BOOST_CHECK_EQUAL(C(2,2), 9.0);
 }
 
+BOOST_AUTO_TEST_CASE(IdentityMatrixTest)
+{
+
+}
+
 BOOST_AUTO_TEST_CASE(AdditionTest)
 {
     double M_d[] =
@@ -48,4 +53,32 @@ BOOST_AUTO_TEST_CASE(AdditionTest)
     au::vector3d b(b_d, b_d + 3);
 
     au::vector3d x = au::linsolve(A, b);
+}
+
+BOOST_AUTO_TEST_CASE(NegationTest)
+{
+
+}
+
+BOOST_AUTO_TEST_CASE(MultiplicationTest)
+{
+
+}
+
+BOOST_AUTO_TEST_CASE(TransposeTest)
+{
+
+}
+
+BOOST_AUTO_TEST_CASE(InverseTest)
+{
+
+}
+
+BOOST_AUTO_TEST_CASE(LinsolveTest)
+{
+    au::matrix3d A = { 2, 6, 1, 0, 2, 1, 1, 1, 4 };
+    au::vector3d b = { 7, 2, 3 };
+    au::vector3d x = au::linsolve(A, b);
+    std::cout << x << std::endl;
 }
