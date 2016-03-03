@@ -223,6 +223,9 @@ BOOST_AUTO_TEST_CASE(InverseTest)
 
     au::matrix4d I = Ainv * A;
     BOOST_CHECK_MATRIX_ALMOST_EQUALITY(I, au::matrix4d::identity());
+
+    I = A * Ainv;
+    BOOST_CHECK_MATRIX_ALMOST_EQUALITY(I, au::matrix4d::identity());
 }
 
 BOOST_AUTO_TEST_CASE(LinsolveTest)
