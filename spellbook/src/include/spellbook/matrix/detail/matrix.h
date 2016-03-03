@@ -282,7 +282,94 @@ template <typename T, matrix_index M, matrix_index N>
 matrix<T, N, M> inverse(const matrix<T, M, N>& m)
 {
     // TODO: implement generic inverse computation
-    matrix<T, N, M> out;
+    matrix<T, N, M> out = matrix<T, N, M>::identity();
+
+    matrix<T, N, N> mc(m);
+
+    // convert to an upper-triangular system
+
+    // for each row...
+    for (matrix_index i = 0; i < M; ++i) {
+        // check for singularity
+        bool singular = true;
+        for (matrix_index ii = i; singular && ii < M; ++ii) {
+            if (mc(ii, i) != 0.0) {
+                singular = false;
+            }
+        }
+
+        if (singular) {
+            throw matrix_exception("singular matrix");
+        }
+
+        // check for permutation
+        if (mc(i, i) == 0.0) {
+            for (matrix_index ii = i + 1; ii < M; ++ii) {
+                if (mc(ii, i) != 0.0) {
+                    // swap rows ii and i (TODO: in out too)
+                    for (matrix_index j = 0; j < M; ++j) {
+                        T tmp;
+                        tmp = mc(ii, j);
+                        mc(ii, j) = mc(i, j);
+                        mc(i, j) = tmp;
+
+                        tmp = out(ii, j);
+                        out(ii, j) = out(i, j);
+                        out(i, j) = tmp;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // proceed as normal with each successive row
+        for (matrix_index ii = i + 1; ii < M; ++ii) {
+            const T lij = mc(ii, i) / mc(i, i);
+
+            for (matrix_index j = 0; j < N; ++j) {
+                mc(ii, j) += -lij * mc(i, j);
+            }
+
+            for (matrix_index j = 0; j < N; ++j) {
+                out(ii, j) += -lij * out(i, j);
+            }
+        }
+    }
+
+    // backwards reduce the augmented matrix
+
+    // for each row, starting with the last
+    for (matrix_index i = M - 1; i != (matrix_index)-1; --i) {
+        // normalize row to 1
+        const T nrm = 1.0 / mc(i, i);
+        mc(i, i) *= nrm;
+        for (matrix_index j = 0; j < N; ++j) {
+            out(i, j) *= nrm;
+        }
+
+        for (matrix_index ii = i - 1; ii != (matrix_index)-1; --ii) {
+            const T lij = mc(ii, i);
+
+            mc(ii, i) -= lij * mc(i, i);
+
+            for (matrix_index j = 0; j < N; ++j) {
+                out(ii, j) -= lij * out(i, j);
+            }
+        }
+    }
+
+    return out;
+}
+
+template <typename T>
+matrix1<T> inverse(const matrix1<T>& m)
+{
+    if (m[0] == 0.0) {
+        throw matrix_exception("singular matrix");
+    }
+
+    matrix1<T> out;
+    out[0] = 1.0 / m[0];
     return out;
 }
 
@@ -297,7 +384,10 @@ matrix2<T> inverse(const matrix2<T>& m)
     au::matrix2<T> Ainv;
     const T d = a11 * a22 - a12 * a21;
 
-    // TODO: raise error if non-invertible
+    if (d == 0.0) {
+        throw matrix_exception("singular matrix");
+    }
+
     const T dinv = 1.0 / d;
     Ainv(0, 0) = dinv * a22;
     Ainv(0, 1) = dinv * -a12;
@@ -324,7 +414,10 @@ matrix3<T> inverse(const matrix3<T>& m)
             a12 * (a21 * a33 - a23 * a31) +
             a13 * (a21 * a32 - a22 * a31);
 
-    // TODO: raise error if non-invertible
+    if (d == 0.0) {
+        throw matrix_exception("singular matrix");
+    }
+
     const T dinv = 1.0 / d;
     const T ap11 = a22 * a33 - a23 * a32;
     const T ap12 = a13 * a32 - a12 * a33;

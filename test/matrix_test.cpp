@@ -32,6 +32,19 @@
     BOOST_CHECK_EQUAL(a(2, 2), b(2, 2));\
 }
 
+#define BOOST_CHECK_MATRIX_ALMOST_EQUALITY(a, b)\
+{\
+    BOOST_CHECK(fabs(a(0, 0) - b(0, 0)) < 1e-6);\
+    BOOST_CHECK(fabs(a(0, 1) - b(0, 1)) < 1e-6);\
+    BOOST_CHECK(fabs(a(0, 2) - b(0, 2)) < 1e-6);\
+    BOOST_CHECK(fabs(a(1, 0) - b(1, 0)) < 1e-6);\
+    BOOST_CHECK(fabs(a(1, 1) - b(1, 1)) < 1e-6);\
+    BOOST_CHECK(fabs(a(1, 2) - b(1, 2)) < 1e-6);\
+    BOOST_CHECK(fabs(a(2, 0) - b(2, 0)) < 1e-6);\
+    BOOST_CHECK(fabs(a(2, 1) - b(2, 1)) < 1e-6);\
+    BOOST_CHECK(fabs(a(2, 2) - b(2, 2)) < 1e-6);\
+}
+
 BOOST_AUTO_TEST_CASE(MatrixConstructionTest)
 {
     // not a whole llot to test here, but this should force instantiation
@@ -187,6 +200,10 @@ BOOST_AUTO_TEST_CASE(SubtractionTest)
 BOOST_AUTO_TEST_CASE(MultiplicationTest)
 {
     // TODO: this test and later
+    au::matrix<double, 3, 2> A = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+    au::matrix<double, 2, 3> B = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+    au::matrix3d C = A * B;
+    BOOST_CHECK_MATRIX_VALUES(C, 9.0, 12.0, 15.0, 19.0, 26.0, 33.0, 29.0, 40.0, 51.0);
 }
 
 BOOST_AUTO_TEST_CASE(TransposeTest)
@@ -195,6 +212,17 @@ BOOST_AUTO_TEST_CASE(TransposeTest)
 
 BOOST_AUTO_TEST_CASE(InverseTest)
 {
+    au::matrix4d A = {
+        1.0, -2.0, 0.0, 2.0,
+        4.0, 1.0, -1.0, -1.0,
+        -8.0, -1.0, 2.0, 1.0,
+        -4.0, -1.0, 1.0, 2.0
+    };
+
+    au::matrix4d Ainv = au::inverse(A);
+
+    au::matrix4d I = Ainv * A;
+    BOOST_CHECK_MATRIX_ALMOST_EQUALITY(I, au::matrix4d::identity());
 }
 
 BOOST_AUTO_TEST_CASE(LinsolveTest)
