@@ -91,6 +91,9 @@ matrix<T, N, M> transpose(const matrix<T, M, N>& m);
 template <typename T, matrix_index M, matrix_index N>
 matrix<T, N, M> inverse(const matrix<T, M, N>& m);
 
+template <typename T, matrix_index M, matrix_index N>
+T determinant(const matrix<T, M, N>& m);
+
 template <typename T, matrix_index N>
 matrix<T, N, 1> linsolve(const matrix<T, N, N>& A, const matrix<T, N, 1>& b);
 
@@ -101,10 +104,12 @@ template <typename T> using matrix1 = matrix<T, 1, 1>;
 template <typename T> using matrix2 = matrix<T, 2, 2>;
 template <typename T> using matrix3 = matrix<T, 3, 3>;
 template <typename T> using matrix4 = matrix<T, 4, 4>;
-template <typename T> using vector1 = matrix<T, 1, 1>;
-template <typename T> using vector2 = matrix<T, 2, 1>;
-template <typename T> using vector3 = matrix<T, 3, 1>;
-template <typename T> using vector4 = matrix<T, 4, 1>;
+
+template <typename T, matrix_index M> using vector = matrix<T, M, 1>;
+template <typename T> using vector1 = vector<T, 1>;
+template <typename T> using vector2 = vector<T, 2>;
+template <typename T> using vector3 = vector<T, 3>;
+template <typename T> using vector4 = vector<T, 4>;
 
 typedef matrix1<float> matrix1f;
 typedef matrix2<float> matrix2f;
