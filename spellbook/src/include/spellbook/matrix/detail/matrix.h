@@ -381,7 +381,7 @@ matrix2<T> inverse(const matrix2<T>& m)
     const T& a22 = m(1, 1);
 
     au::matrix2<T> Ainv;
-    const T d = a11 * a22 - a12 * a21;
+    const T d = determinant(m);
 
     if (d == 0.0) {
         throw matrix_exception("singular matrix");
@@ -408,10 +408,7 @@ matrix3<T> inverse(const matrix3<T>& m)
     const T& a32 = m(2, 1);
     const T& a33 = m(2, 2);
 
-    const T d =
-            a11 * (a22 * a33 - a32 * a23) -
-            a12 * (a21 * a33 - a23 * a31) +
-            a13 * (a21 * a32 - a22 * a31);
+    const T d = determinant(m);
 
     if (d == 0.0) {
         throw matrix_exception("singular matrix");
@@ -439,6 +436,27 @@ matrix3<T> inverse(const matrix3<T>& m)
     Ainv(2, 1) = dinv * ap32;
     Ainv(2, 2) = dinv * ap33;
     return Ainv;
+}
+
+template <typename T>
+T determinant(const matrix2<T>& m)
+{
+    return m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0);
+}
+
+template <typename T>
+T determinant(const matrix3<T>& m)
+{
+    return m(0, 0) * (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2)) -
+            m(0, 1) * (m(1, 0) * m(2, 2) - m(1, 2) * m(2, 0)) +
+            m(0, 2) * (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0));
+}
+
+template <typename T, matrix_index M, matrix_index N>
+T determinant(const matrix<T, M, N>& m)
+{
+    throw "unimplemented";
+    return T();
 }
 
 template <typename T, matrix_index N>
