@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(spellbook)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/Modules")
-include(EnableCXX11)
-include(LocateEigen)
+include(cmake/Modules/EnableCXX11.cmake)
+include(cmake/Modules/LocateEigen.cmake)
 
 set(SB_MAJOR_VER 0)
 set(SB_MINOR_VER 0)

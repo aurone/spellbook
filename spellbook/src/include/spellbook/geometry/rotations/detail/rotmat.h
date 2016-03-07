@@ -1,6 +1,8 @@
 #ifndef au_detail_rotmat_h
 #define au_detail_rotmat_h
 
+#include <cmath>
+
 #include <spellbook/geometry/rotations/axis_angle.h>
 #include <spellbook/geometry/rotations/euler_angles.h>
 #include <spellbook/geometry/rotations/quaternion.h>
@@ -17,15 +19,15 @@ template <typename T>
 rotmat<T>::rotmat(const vec3<T>& _u1, const vec3<T>& _u2, const vec3<T>& _u3) :
     m_mat()
 {
-    m_mat.m_data[0] = _u1.x;
-    m_mat.m_data[1] = _u1.y;
-    m_mat.m_data[2] = _u1.z;
-    m_mat.m_data[3] = _u2.x;
-    m_mat.m_data[4] = _u2.y;
-    m_mat.m_data[5] = _u2.z;
-    m_mat.m_data[6] = _u3.x;
-    m_mat.m_data[7] = _u3.y;
-    m_mat.m_data[8] = _u3.z;
+    m_mat[0] = _u1.x;
+    m_mat[1] = _u1.y;
+    m_mat[2] = _u1.z;
+    m_mat[3] = _u2.x;
+    m_mat[4] = _u2.y;
+    m_mat[5] = _u2.z;
+    m_mat[6] = _u3.x;
+    m_mat[7] = _u3.y;
+    m_mat[8] = _u3.z;
 }
 
 template <typename T>
@@ -36,15 +38,15 @@ rotmat<T>::rotmat(
 :
     m_mat()
 {
-    m_mat.m_data[0] = a11;
-    m_mat.m_data[1] = a21;
-    m_mat.m_data[2] = a31;
-    m_mat.m_data[3] = a12;
-    m_mat.m_data[4] = a22;
-    m_mat.m_data[5] = a32;
-    m_mat.m_data[6] = a13;
-    m_mat.m_data[7] = a23;
-    m_mat.m_data[8] = a33;
+    m_mat[0] = a11;
+    m_mat[1] = a21;
+    m_mat[2] = a31;
+    m_mat[3] = a12;
+    m_mat[4] = a22;
+    m_mat[5] = a32;
+    m_mat[6] = a13;
+    m_mat[7] = a23;
+    m_mat[8] = a33;
 }
 
 template <typename T>
@@ -101,11 +103,291 @@ rotmat<T>::rotmat(const quaternion<T>& q) :
 }
 
 template <typename T>
-template <int AngleConvention>
-rotmat<T>::rotmat(const euler_angles<T, AngleConvention>& ea) :
+rotmat<T>::rotmat(const xzx_angles<T>& ea) :
     m_mat()
 {
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
 
+    m_mat(0, 0) = c2;
+    m_mat(0, 1) = -c3 * s2;
+    m_mat(0, 2) = s2 * s3;
+
+    m_mat(1, 0) = c1 * s2;
+    m_mat(1, 1) = c1 * c2 * c3 - s1 * s3;
+    m_mat(1, 2) = -c3 * s1 - c1 * c2 * s3;
+
+    m_mat(2, 0) = s1 * s2;
+    m_mat(2, 1) = c1 * s3 + c2 * c3 * s1;
+    m_mat(2, 2) = c1 * c3 - c2 * s1 * s3;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const xyx_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c2;
+    m_mat(0, 1) = s2 * s3;
+    m_mat(0, 2) = c3 * s2;
+
+    m_mat(1, 0) = s1 * s2;
+    m_mat(1, 1) = c1 * c3 - c2 * s1 * s3;
+    m_mat(1, 2) = -c1 * s3 - c2 * c3 * s1;
+
+    m_mat(2, 0) = -c1 * s2;
+    m_mat(2, 1) = c3 * s1 + c1 * c2 * s3;
+    m_mat(2, 2) = c1 * c2 * c3 - s1 * s3;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const yxy_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c3 - c2 * s1 * s3;
+    m_mat(0, 1) = s1 * s2;
+    m_mat(0, 2) = c1 * s3 + c2 * c3 * s1;
+
+    m_mat(1, 0) = s2 * s3;
+    m_mat(1, 1) = c2;
+    m_mat(1, 2) = -c3 * s2;
+
+    m_mat(2, 0) = -c3 * s1 - c1 * c2 * s3;
+    m_mat(2, 1) = c1 * s2;
+    m_mat(2, 2) = c1 * c2 * c3 - s1 * s3;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const yzy_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c2 * c3 - s1 * s3;
+    m_mat(0, 1) = -c1 * s2;
+    m_mat(0, 2) = c3 * s1 + c1 * c2 * s3;
+
+    m_mat(1, 0) = c3 * s2;
+    m_mat(1, 1) = c2;
+    m_mat(1, 2) = s2 * s3;
+
+    m_mat(2, 0) = -c1 * s3 - c2 * c3 * s1;
+    m_mat(2, 1) = s1 * s2;
+    m_mat(2, 2) = c1 * c3 - c2 * s1 * s3;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const zyz_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c2 * c3 - s1 * s3;
+    m_mat(0, 1) = -c3 * s1 - c1 * c2 * s3;
+    m_mat(0, 2) = c1 * s2;
+
+    m_mat(1, 0) = c1 * s3 + c2 * c3 * s1;
+    m_mat(1, 1) = c1 * c3 - c2 * s1 * s3;
+    m_mat(1, 2) = s1 * s2;
+
+    m_mat(2, 0) = -c3 * s2;
+    m_mat(2, 1) = s2 * s3;
+    m_mat(2, 2) = c2;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const zxz_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c3 - c2 * s1 * s3;
+    m_mat(0, 1) = -c3 * s1 - c1 * c2 * s3;
+    m_mat(0, 2) = s2 * s3;
+
+    m_mat(1, 0) = c2 * c3 * s1 + c1 * s3;
+    m_mat(1, 1) = c1 * c2 * c3 - s1 * s3;
+    m_mat(1, 2) = -c3 * s2;
+
+    m_mat(2, 0) = s1 * s2;
+    m_mat(2, 1) = c1 * s2;
+    m_mat(2, 2) = c2;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const xzy_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c2 * c3;
+    m_mat(0, 1) = -s2;
+    m_mat(0, 2) = c2 * s3;
+
+    m_mat(1, 0) = s1 * s3 + c1 * c3 * s2;
+    m_mat(1, 1) = c1 * c2;
+    m_mat(1, 2) = c1 * s2 * s3 - c3 * s1;
+
+    m_mat(2, 0) = c3 * s1 * s2 - c1 * s3;
+    m_mat(2, 1) = c2 * s1;
+    m_mat(2, 2) = c1 * c3 + s1 * s2 * s3;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const xyz_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c2 * c3;
+    m_mat(0, 1) = -c2 * s3;
+    m_mat(0, 2) = s2;
+
+    m_mat(1, 0) = c1 * s3 + c3 * s1 * s2;
+    m_mat(1, 1) = c1 * c3 - s1 * s2 * s3;
+    m_mat(1, 2) = -c2 * s1;
+
+    m_mat(2, 0) = s1 * s3 - c1 *c3 * s2;
+    m_mat(2, 1) = c3 * s1 + c1 * s2 * s3;
+    m_mat(2, 2) = c1 *c2;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const yxz_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c3 + s1 * s2 * s3;
+    m_mat(0, 1) = c3 * s1 * s2 - c1 * s3;
+    m_mat(0, 2) = c2 * s1;
+
+    m_mat(1, 0) = c2 * s3;
+    m_mat(1, 1) = c2 * c3;
+    m_mat(1, 2) = -s2;
+
+    m_mat(2, 0) = c1 * s2 * s3 - c3 * s1;
+    m_mat(2, 1) = c1 * c3 * s2 + s1 * s3;
+    m_mat(2, 2) = c1 * c2;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const yzx_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c2;
+    m_mat(0, 1) = s1 * s3 - c1 * c3 * s2;
+    m_mat(0, 2) = c3 * s1 + c1 * s2 * s3;
+
+    m_mat(1, 0) = s2;
+    m_mat(1, 1) = c2 * c3;
+    m_mat(1, 2) = -c2 * s3;
+
+    m_mat(2, 0) = -c2 * s1;
+    m_mat(2, 1) = c1 * s3 + c3 * s1 * s2;
+    m_mat(2, 2) = c1 * c3 - s1 * s2 * s3;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const zyx_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c2;
+    m_mat(0, 1) = c1 * s2 * s3 - c3 * s1;
+    m_mat(0, 2) = s1 * s3 + c1 * c3 * s2;
+
+    m_mat(1, 0) = c2 * s1;
+    m_mat(1, 1) = c1 * c3 + s1 * s2 * s3;
+    m_mat(1, 2) = c3 * s1 * s2 - c1 * s3;
+
+    m_mat(2, 0) = -s2;
+    m_mat(2, 1) = c2 * s3;
+    m_mat(2, 2) = c2 * c3;
+}
+
+template <typename T>
+rotmat<T>::rotmat(const zxy_angles<T>& ea) :
+    m_mat()
+{
+    const T c1 = std::cos(ea.alpha);
+    const T c2 = std::cos(ea.beta);
+    const T c3 = std::cos(ea.gamma);
+    const T s1 = std::sin(ea.alpha);
+    const T s2 = std::sin(ea.beta);
+    const T s3 = std::sin(ea.gamma);
+
+    m_mat(0, 0) = c1 * c3 - s1 * s2 * s3;
+    m_mat(0, 1) = -c2 * s1;
+    m_mat(0, 2) = c1 * s3 + c3 * s1 * s2;
+
+    m_mat(1, 0) = c3 * s1 + c1 * s2 * s3;
+    m_mat(1, 1) = c1 * c2;
+    m_mat(1, 2) = s1 * s3 - c1 * c3 * s2;
+
+    m_mat(2, 0) = -c2 * s3;
+    m_mat(2, 1) = s2;
+    m_mat(2, 2) = c2 * c3;
 }
 
 template <typename T>
@@ -135,19 +417,19 @@ T* rotmat<T>::data()
 template <typename T>
 const vec3<T>& rotmat<T>::u1() const
 {
-    return reinterpret_cast<const vec3<T>&>(m_mat.m_data[0]);
+    return reinterpret_cast<const vec3<T>&>(m_mat.data()[0]);
 }
 
 template <typename T>
 const vec3<T>& rotmat<T>::u2() const
 {
-    return reinterpret_cast<const vec3<T>&>(m_mat.m_data[3]);
+    return reinterpret_cast<const vec3<T>&>(m_mat.data()[3]);
 }
 
 template <typename T>
 const vec3<T>& rotmat<T>::u3() const
 {
-    return reinterpret_cast<const vec3<T>&>(m_mat.m_data[6]);
+    return reinterpret_cast<const vec3<T>&>(m_mat.data()[6]);
 }
 
 template <typename T>
@@ -199,6 +481,16 @@ template <typename T>
 rotmat<T> inverse(const rotmat<T>& r)
 {
     return transpose(r);
+}
+
+template <typename T>
+vec3<T> operator*(const rotmat<T>& R, const vec3<T>& v)
+{
+    vec3<T> vo;
+    vo.x = R(0, 0) * v.x + R(0, 1) * v.y + R(0, 2) * v.z;
+    vo.y = R(1, 0) * v.x + R(1, 1) * v.y + R(1, 2) * v.z;
+    vo.z = R(2, 0) * v.x + R(2, 1) * v.y + R(2, 2) * v.z;
+    return vo;
 }
 
 template <typename T>

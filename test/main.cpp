@@ -128,10 +128,10 @@ void TestMatrix()
     std::vector<double> bints = ints;
     std::reverse(bints.begin(), bints.end());
 
-    au::matrix3d a(ints.data());
+    au::matrix3d a(ints.begin(), ints.end());
     std::cout << "a = " << a << std::endl;
 
-    au::matrix3d b(bints.data());
+    au::matrix3d b(bints.begin(), bints.end());
     std::cout << "b = " << b << std::endl;
 
     std::cout << "a + b = " << a + b << std::endl;

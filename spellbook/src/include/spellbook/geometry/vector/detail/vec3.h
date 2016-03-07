@@ -104,6 +104,17 @@ vec3<T> cross(const vec3<T>& u, const vec3<T>& v)
             u.x * v.y - u.y * v.x);
 }
 
+template <typename U, typename V>
+vec3<decltype(U()*V())> operator*(const matrix3<U>& m, const vec3<V>& v)
+{
+    typedef decltype(U()*V()) ResultType;
+    vec3<ResultType> ret;
+    ret.x = m(0, 0) * v.x + m(0, 1) * v.y + m(0, 2) * v.z;
+    ret.y = m(1, 0) * v.x + m(1, 1) * v.y + m(1, 2) * v.z;
+    ret.z = m(2, 0) * v.x + m(2, 1) * v.y + m(2, 2) * v.z;
+    return ret;
+}
+
 template <typename T>
 std::ostream& operator<<(std::ostream& o, const vec3<T>& v)
 {

@@ -37,8 +37,8 @@ std::ostream& operator<<(std::ostream& o, const pose2<T>& p)
 template <typename T>
 pose2<T> interp(const pose2<T>& p, const pose2<T>& q, T t)
 {
-    const double af = p.yaw + t * ShortestAngleDiff(q.yaw, p.yaw);
-    const double iang = NormalizeAngle(af, 0, 2.0 * M_PI);
+    const double af = p.yaw + t * shortest_angle_diff(q.yaw, p.yaw);
+    const double iang = normalize_angle(af, 0, 2.0 * M_PI);
     return pose2<T>(interp(p.pos, q.pos, t), iang);
 }
 
