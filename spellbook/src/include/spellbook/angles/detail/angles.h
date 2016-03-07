@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <math.h>
 
+#include <spellbook/math/math.h>
+
 namespace au {
 
 inline
