@@ -27,7 +27,7 @@ private:
         int y;
         bool visited;
         Cell* parent;
-    
+
         Cell() : x(), y(), visited(false), parent(nullptr) { }
         Cell(int x, int y) : x(x), y(y), visited(false), parent(nullptr) { }
     };
@@ -37,5 +37,5 @@ private:
     int m_hall_girth;
     int m_wall_girth;
 
-    void mazegen_dfs(au::Grid<2, Cell>& grid, Cell* c);
+    void mazegen_dfs(au::grid<2, Cell>& grid, Cell* c);
 };

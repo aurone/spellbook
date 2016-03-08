@@ -24,8 +24,8 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef Grid_h
-#define Grid_h
+#ifndef au_grid_h
+#define au_grid_h
 
 #include <assert.h>
 #include <stdlib.h>
@@ -40,32 +40,32 @@ namespace au
 {
 
 template <int N, typename T>
-class Grid
+class grid
 {
 public:
 
-    class GridIterator;
-    class GridIndex;
+    class grid_iterator;
+    class grid_index;
 
     typedef std::size_t size_type;
     typedef T value_type;
     typedef T& reference;
     typedef const T& const_reference;
-    typedef GridIterator iterator;
-    typedef const GridIterator const_iterator;
+    typedef grid_iterator iterator;
+    typedef const grid_iterator const_iterator;
 
-    Grid();
+    grid();
 
     template <typename... sizes>
-    Grid(sizes... counts);
+    grid(sizes... counts);
 
-    Grid(const Grid& other);
-    Grid& operator=(const Grid& rhs);
+    grid(const grid& other);
+    grid& operator=(const grid& rhs);
 
-    Grid(Grid&& other);
-    Grid& operator=(Grid&& rhs);
+    grid(grid&& other);
+    grid& operator=(grid&& rhs);
 
-    ~Grid();
+    ~grid();
 
     /// \name Element access
     ///@{
@@ -82,16 +82,16 @@ public:
     const_reference at(CoordTypes... coords) const;
 
     template <typename... CoordTypes>
-    reference operator()(const GridIndex& index);
+    reference operator()(const grid_index& index);
 
     template <typename... CoordTypes>
-    const_reference operator()(const GridIndex& index) const;
+    const_reference operator()(const grid_index& index) const;
 
     template <typename... CoordTypes>
-    reference at(const GridIndex& index);
+    reference at(const grid_index& index);
 
     template <typename... CoordTypes>
-    const_reference at(const GridIndex& index) const;
+    const_reference at(const grid_index& index) const;
 
     T* data() { return data_; }
 
@@ -106,10 +106,10 @@ public:
     const_iterator begin() const;
     const_iterator end() const;
 
-    iterator grid_begin(const GridIndex& start, const GridIndex& end);
-    const_iterator grid_begin(const GridIndex& start, const GridIndex& end) const;
-    iterator grid_end(const GridIndex& start, const GridIndex& end);
-    const_iterator grid_end(const GridIndex& start, const GridIndex& end) const;
+    iterator grid_begin(const grid_index& start, const grid_index& end);
+    const_iterator grid_begin(const grid_index& start, const grid_index& end) const;
+    iterator grid_end(const grid_index& start, const grid_index& end);
+    const_iterator grid_end(const grid_index& start, const grid_index& end) const;
     ///@}
 
     /// \name Capacity
@@ -124,23 +124,23 @@ public:
 
     template <typename... SizeTypes>
     void resize(SizeTypes... sizes);
-    
+
     void assign(const T& value);
     ///@}
 
-    class GridIndex
+    class grid_index
     {
     public:
 
-        GridIndex();
+        grid_index();
 
         template <typename... CoordTypes>
-        GridIndex(CoordTypes... coords);
+        grid_index(CoordTypes... coords);
 
         size_type& operator()(size_type dim) { return coords_[dim]; }
         const size_type& operator()(size_type dim) const { return coords_[dim]; }
 
-        bool operator<(const GridIndex& rhs) const {
+        bool operator<(const grid_index& rhs) const {
             for (int i = 0; i < N; ++i) {
                 if (coords_[i] < rhs.coords_[i]) {
                     return true;
@@ -178,45 +178,45 @@ public:
         void assign_all(size_type coord);
     };
 
-    class GridIterator : public std::iterator<
+    class grid_iterator : public std::iterator<
             std::bidirectional_iterator_tag,
-            typename Grid<N, T>::value_type>
+            typename grid<N, T>::value_type>
     {
-        friend class Grid;
+        friend class grid;
 
     public:
 
-        typedef typename Grid<N, T>::size_type size_type;
-        typedef typename Grid<N, T>::value_type value_type;
+        typedef typename grid<N, T>::size_type size_type;
+        typedef typename grid<N, T>::value_type value_type;
 
-        GridIterator();
+        grid_iterator();
 
-        GridIterator(const GridIterator& other);
-        GridIterator& operator=(const GridIterator& rhs);
+        grid_iterator(const grid_iterator& other);
+        grid_iterator& operator=(const grid_iterator& rhs);
 
         /// \name Iterator API
         ///@{
-        GridIterator& operator++();
-        GridIterator operator++(int);
+        grid_iterator& operator++();
+        grid_iterator operator++(int);
 
-        bool operator==(const GridIterator& other) const;
-        bool operator!=(const GridIterator& other) const;
+        bool operator==(const grid_iterator& other) const;
+        bool operator!=(const grid_iterator& other) const;
 
         value_type& operator*();
         value_type* operator->();
 
-        GridIterator& operator--();
-        GridIterator operator--(int);
+        grid_iterator& operator--();
+        grid_iterator operator--(int);
         ///@}
 
         size_type coord(size_type dim) const { return curr_(dim); }
 
     private:
 
-        Grid<N, T>* grid_;
-        GridIndex begin_;
-        GridIndex end_;
-        GridIndex curr_;
+        grid<N, T>* grid_;
+        grid_index begin_;
+        grid_index end_;
+        grid_index curr_;
 
         size_type size(size_type dim) const { return end_(dim) - begin_(dim) + 1; }
     };
@@ -226,7 +226,7 @@ private:
     value_type* data_;
     size_type   dims_[N];
 
-    void copy(const Grid& other);
+    void copy(const grid& other);
 
     template <size_type DIM, typename SizeType, typename... SizeTypes> // TODO: how to declare DIM in a separate implementation?
     void set_sizes(SizeType size, SizeTypes... sizes)
@@ -243,7 +243,7 @@ private:
         dims_[N-1] = size;
     }
 
-    size_type coord_to_index(const GridIndex& index);
+    size_type coord_to_index(const grid_index& index);
 
     template <typename... CoordTypes>
     size_type coord_to_index(CoordTypes... coords);
@@ -255,7 +255,7 @@ private:
     size_type coord_to_index_rec(size_type& agg, Coord coord);
 
     template <int DIM>
-    void assign_sizes(GridIndex& index);
+    void assign_sizes(grid_index& index);
 
     template <int DIM, typename Coord, typename... CoordTypes>
     bool within_bounds(Coord coord, CoordTypes... coords) const;
@@ -263,11 +263,11 @@ private:
     template <int DIM, typename Coord>
     bool within_bounds(Coord coord) const;
 
-    GridIndex create_last_index() const;
+    grid_index create_last_index() const;
 };
 
 } // namespace au
 
 #endif
 
-#include "Grid-inl.h"
+#include "detail/grid.h"

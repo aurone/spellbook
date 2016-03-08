@@ -8,20 +8,20 @@ namespace au {
 
 template <typename T>
 void RasterizeLine(
-    Grid<2, T>& grid,
-    const typename Grid<2, T>::GridIndex& a,
-    const typename Grid<2, T>::GridIndex& b,
+    grid<2, T>& grid,
+    const typename grid<2, T>::grid_index& a,
+    const typename grid<2, T>::grid_index& b,
     const T& fill)
 {
-    auto filler = [&](const typename Grid<2,T>::GridIndex& i) { grid(i) = fill; };
+    auto filler = [&](const typename grid<2,T>::grid_index& i) { grid(i) = fill; };
     RasterizeLine(grid, a, b, filler);
 }
 
 template <typename T, typename Function>
 void RasterizeLine(
-    Grid<2, T>& grid,
-    typename Grid<2, T>::GridIndex a,
-    typename Grid<2, T>::GridIndex b,
+    grid<2, T>& grid,
+    typename grid<2, T>::grid_index a,
+    typename grid<2, T>::grid_index b,
     const Function& fn)
 {
     bool steep = abs((int)(b(1) - a(1))) > abs((int)(b(0) - a(0)));
@@ -40,10 +40,10 @@ void RasterizeLine(
     int y = a(1);
     for (int x = a(0); x <= b(0); x++) {
         if (steep) {
-            fn(typename Grid<2, T>::GridIndex(x, y));
+            fn(typename grid<2, T>::grid_index(x, y));
         }
         else {
-            fn(typename Grid<2, T>::GridIndex(y, x));
+            fn(typename grid<2, T>::grid_index(y, x));
         }
         error -= dy;
         if (error < 0) {

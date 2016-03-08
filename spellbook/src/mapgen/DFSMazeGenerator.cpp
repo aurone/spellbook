@@ -23,7 +23,7 @@ DFSMazeGenerator::DFSMazeGenerator(int hall_girth, int wall_girth) :
 
 DFSMazeGenerator::~DFSMazeGenerator()
 {
-    
+
 }
 
 void DFSMazeGenerator::setHallGirth(int hall_girth)
@@ -44,7 +44,7 @@ void DFSMazeGenerator::generate(Map& map)
     const int cy = map.size(1) / cell_girth;
 
     // initialize cell grid
-    au::Grid<2, Cell> cells(cx, cy);
+    au::grid<2, Cell> cells(cx, cy);
     for (int x = 0; x < cells.size(0); ++x) {
         for (int y = 0; y < cells.size(1); ++y) {
             cells(x, y) = Cell(x, y);
@@ -131,7 +131,7 @@ void DFSMazeGenerator::generate(Map& map)
     }
 }
 
-void DFSMazeGenerator::mazegen_dfs(au::Grid<2, Cell>& grid, Cell* c)
+void DFSMazeGenerator::mazegen_dfs(au::grid<2, Cell>& grid, Cell* c)
 {
     c->visited = true;
 

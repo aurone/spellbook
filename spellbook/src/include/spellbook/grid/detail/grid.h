@@ -24,17 +24,17 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef Grid_inl_h
-#define Grid_inl_h
+#ifndef au_detail_grid_h
+#define au_detail_grid_h
 
-#include "Grid.h"
+#include "../grid.h"
 
 // standard includes
 #include <string.h>
 #include <iostream>
 #include <sstream>
 
-template<class T> typename std::add_rvalue_reference<T>::type val();
+template <class T> typename std::add_rvalue_reference<T>::type val();
 template <class T> struct id { typedef T type; };
 
 template <class T, class... P> struct mul_type;
@@ -61,11 +61,11 @@ namespace au
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-// Grid Implementation
+// grid Implementation
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N, typename T>
-Grid<N, T>::Grid() :
+grid<N, T>::grid() :
     data_(nullptr)
 {
     this->clear();
@@ -73,22 +73,22 @@ Grid<N, T>::Grid() :
 
 template <int N, typename T>
 template <typename... sizes>
-Grid<N, T>::Grid(sizes... counts) :
+grid<N, T>::grid(sizes... counts) :
     data_(nullptr)
 {
-    static_assert(sizeof...(counts) == N, "Invalid dimensions passed to Grid constructor");
+    static_assert(sizeof...(counts) == N, "Invalid dimensions passed to grid constructor");
     this->resize(counts...);
 }
 
 template <int N, typename T>
-Grid<N, T>::Grid(const Grid& other) :
+grid<N, T>::grid(const grid& other) :
     data_(nullptr)
 {
     this->copy(other);
 }
 
 template <int N, typename T>
-Grid<N, T>& Grid<N, T>::operator=(const Grid& rhs)
+grid<N, T>& grid<N, T>::operator=(const grid& rhs)
 {
     if (this != &rhs) {
         this->copy(rhs);
@@ -97,7 +97,7 @@ Grid<N, T>& Grid<N, T>::operator=(const Grid& rhs)
 }
 
 template <int N, typename T>
-Grid<N, T>::Grid(Grid&& other) :
+grid<N, T>::grid(grid&& other) :
     data_(other.data_),
     dims_()
 {
@@ -110,7 +110,7 @@ Grid<N, T>::Grid(Grid&& other) :
 }
 
 template <int N, typename T>
-Grid<N, T>& Grid<N, T>::operator=(Grid&& rhs)
+grid<N, T>& grid<N, T>::operator=(grid&& rhs)
 {
     if (this != &rhs) {
         data_ = rhs.data_;
@@ -124,14 +124,14 @@ Grid<N, T>& Grid<N, T>::operator=(Grid&& rhs)
 }
 
 template <int N, typename T>
-Grid<N, T>::~Grid()
+grid<N, T>::~grid()
 {
     this->clear();
 }
 
 template <int N, typename T>
 template <typename... CoordTypes>
-typename Grid<N, T>::reference Grid<N, T>::operator()(CoordTypes... coords)
+typename grid<N, T>::reference grid<N, T>::operator()(CoordTypes... coords)
 {
     static_assert(sizeof...(coords) == N, "Invalid number of coordinates passed to operator()");
     size_type ind = this->coord_to_index(coords...);
@@ -140,14 +140,14 @@ typename Grid<N, T>::reference Grid<N, T>::operator()(CoordTypes... coords)
 
 template <int N, typename T>
 template <typename... CoordTypes>
-typename Grid<N, T>::const_reference Grid<N, T>::operator()(CoordTypes... coords) const
+typename grid<N, T>::const_reference grid<N, T>::operator()(CoordTypes... coords) const
 {
-    return const_cast<const T&>(const_cast<Grid<N, T>*>(this)->operator()(coords...));
+    return const_cast<const T&>(const_cast<grid<N, T>*>(this)->operator()(coords...));
 }
 
 template <int N, typename T>
 template <typename... CoordTypes>
-typename Grid<N, T>::reference Grid<N, T>::at(CoordTypes... coords)
+typename grid<N, T>::reference grid<N, T>::at(CoordTypes... coords)
 {
     size_type ind = this->coord_to_index(coords...);
     if (!(ind < this->total_size())) {
@@ -160,14 +160,14 @@ typename Grid<N, T>::reference Grid<N, T>::at(CoordTypes... coords)
 
 template <int N, typename T>
 template <typename... CoordTypes>
-typename Grid<N, T>::const_reference Grid<N, T>::at(CoordTypes... coords) const
+typename grid<N, T>::const_reference grid<N, T>::at(CoordTypes... coords) const
 {
-    return const_cast<const T&>(const_cast<Grid<N, T>*>(this)->at(coords...));
+    return const_cast<const T&>(const_cast<grid<N, T>*>(this)->at(coords...));
 }
 
 template <int N, typename T>
 template <typename... CoordTypes>
-auto Grid<N, T>::operator()(const GridIndex& index) -> reference
+auto grid<N, T>::operator()(const grid_index& index) -> reference
 {
     size_type ind = this->coord_to_index(index);
     return data_[ind];
@@ -175,14 +175,14 @@ auto Grid<N, T>::operator()(const GridIndex& index) -> reference
 
 template <int N, typename T>
 template <typename... CoordTypes>
-auto Grid<N, T>::operator()(const GridIndex& index) const -> const_reference
+auto grid<N, T>::operator()(const grid_index& index) const -> const_reference
 {
-    return const_cast<const T&>(const_cast<Grid<N, T>*>(this)->operator()(index));
+    return const_cast<const T&>(const_cast<grid<N, T>*>(this)->operator()(index));
 }
 
 template <int N, typename T>
 template <typename... CoordTypes>
-auto Grid<N, T>::at(const GridIndex& index) -> reference
+auto grid<N, T>::at(const grid_index& index) -> reference
 {
     size_type ind = this->coord_to_index(index);
     if (!(ind < this->total_size())) {
@@ -195,31 +195,31 @@ auto Grid<N, T>::at(const GridIndex& index) -> reference
 
 template <int N, typename T>
 template <typename... CoordTypes>
-auto Grid<N, T>::at(const GridIndex& index) const -> const_reference
+auto grid<N, T>::at(const grid_index& index) const -> const_reference
 {
-    return const_cast<const T&>(const_cast<Grid<N, T>*>(this)->at(index));
+    return const_cast<const T&>(const_cast<grid<N, T>*>(this)->at(index));
 }
 
 template <int N, typename T>
 template <typename... CoordTypes>
-bool Grid<N, T>::within_bounds(CoordTypes... coords) const
+bool grid<N, T>::within_bounds(CoordTypes... coords) const
 {
     return within_bounds<0>(coords...);
 }
 
 template <int N, typename T>
-typename Grid<N, T>::iterator Grid<N, T>::begin()
+typename grid<N, T>::iterator grid<N, T>::begin()
 {
-    GridIterator it;
+    grid_iterator it;
     it.grid_ = this;
     it.end_ = this->create_last_index();
     return it;
 }
 
 template <int N, typename T>
-typename Grid<N, T>::iterator Grid<N, T>::end()
+typename grid<N, T>::iterator grid<N, T>::end()
 {
-    GridIterator it;
+    grid_iterator it;
     it.grid_ = this;
     it.end_ = this->create_last_index();
     it.curr_ = this->create_last_index();
@@ -228,24 +228,24 @@ typename Grid<N, T>::iterator Grid<N, T>::end()
 }
 
 template <int N, typename T>
-const typename Grid<N, T>::GridIterator
-Grid<N, T>::begin() const
+const typename grid<N, T>::grid_iterator
+grid<N, T>::begin() const
 {
-    return const_cast<Grid<N, T>*>(this)->begin();
+    return const_cast<grid<N, T>*>(this)->begin();
 }
 
 template <int N, typename T>
-const typename Grid<N, T>::GridIterator
-Grid<N, T>::end() const
+const typename grid<N, T>::grid_iterator
+grid<N, T>::end() const
 {
-    return const_cast<Grid<N, T>*>(this)->end();
+    return const_cast<grid<N, T>*>(this)->end();
 }
 
 template <int N, typename T>
-typename Grid<N, T>::GridIterator
-Grid<N, T>::grid_begin(const GridIndex& begin, const GridIndex& end)
+typename grid<N, T>::grid_iterator
+grid<N, T>::grid_begin(const grid_index& begin, const grid_index& end)
 {
-    GridIterator it;
+    grid_iterator it;
     it.grid_ = this;
     it.begin_ = begin;
     it.end_ = end;
@@ -254,17 +254,17 @@ Grid<N, T>::grid_begin(const GridIndex& begin, const GridIndex& end)
 }
 
 template <int N, typename T>
-const typename Grid<N, T>::GridIterator
-Grid<N, T>::grid_begin(const GridIndex& begin, const GridIndex& end) const
+const typename grid<N, T>::grid_iterator
+grid<N, T>::grid_begin(const grid_index& begin, const grid_index& end) const
 {
-    return const_cast<typename Grid<N, T>::const_iterator>(const_cast<Grid<N, T>*>(this)->grid_begin(begin, end));
+    return const_cast<typename grid<N, T>::const_iterator>(const_cast<grid<N, T>*>(this)->grid_begin(begin, end));
 }
 
 template <int N, typename T>
-typename Grid<N, T>::GridIterator
-Grid<N, T>::grid_end(const GridIndex& begin, const GridIndex& end)
+typename grid<N, T>::grid_iterator
+grid<N, T>::grid_end(const grid_index& begin, const grid_index& end)
 {
-    GridIterator it;
+    grid_iterator it;
     it.grid_ = this;
     it.begin_ = begin;
     it.end_ = end;
@@ -274,20 +274,20 @@ Grid<N, T>::grid_end(const GridIndex& begin, const GridIndex& end)
 }
 
 template <int N, typename T>
-const typename Grid<N, T>::GridIterator
-Grid<N, T>::grid_end(const GridIndex& begin, const GridIndex& end) const
+const typename grid<N, T>::grid_iterator
+grid<N, T>::grid_end(const grid_index& begin, const grid_index& end) const
 {
-    return const_cast<typename Grid<N, T>::const_iterator>(const_cast<Grid<N, T>*>(this)->grid_end(begin, end));
+    return const_cast<typename grid<N, T>::const_iterator>(const_cast<grid<N, T>*>(this)->grid_end(begin, end));
 }
 
 template <int N, typename T>
-typename Grid<N, T>::size_type Grid<N, T>::size(size_type dim) const
+typename grid<N, T>::size_type grid<N, T>::size(size_type dim) const
 {
     return dims_[dim];
 }
 
 template <int N, typename T>
-typename Grid<N, T>::size_type Grid<N, T>::total_size() const
+typename grid<N, T>::size_type grid<N, T>::total_size() const
 {
     size_type s = 1;
     for (int i = 0; i < N; ++i) { s *= dims_[i]; }
@@ -295,7 +295,7 @@ typename Grid<N, T>::size_type Grid<N, T>::total_size() const
 }
 
 template <int N, typename T>
-void Grid<N, T>::clear()
+void grid<N, T>::clear()
 {
     if (data_) {
         delete[] data_;
@@ -309,7 +309,7 @@ void Grid<N, T>::clear()
 
 template <int N, typename T>
 template <typename... SizeTypes>
-void Grid<N, T>::resize(SizeTypes... sizes)
+void grid<N, T>::resize(SizeTypes... sizes)
 {
     static_assert(sizeof...(sizes) == N, "resize requires same number of arguments as dimensions");
 
@@ -320,7 +320,7 @@ void Grid<N, T>::resize(SizeTypes... sizes)
 }
 
 template <int N, typename T>
-void Grid<N, T>::assign(const T& value)
+void grid<N, T>::assign(const T& value)
 {
     for (size_type i = 0; i < this->total_size(); ++i) {
         data_[i] = value;
@@ -328,7 +328,7 @@ void Grid<N, T>::assign(const T& value)
 }
 
 template <int N, typename T>
-void Grid<N, T>::copy(const Grid& other)
+void grid<N, T>::copy(const grid& other)
 {
     this->clear();
 
@@ -347,9 +347,9 @@ void Grid<N, T>::copy(const Grid& other)
 template <int N, typename T>
 struct IndexCoordinatorBase
 {
-    typedef Grid<N, T> grid_type;
+    typedef grid<N, T> grid_type;
     typedef typename grid_type::size_type size_type;
-    typedef typename grid_type::GridIndex index_type;
+    typedef typename grid_type::grid_index index_type;
 
     IndexCoordinatorBase(size_type& agg) : agg_(agg) { }
     size_type& agg_;
@@ -395,7 +395,7 @@ struct IndexCoordinator<N, T, N> : public IndexCoordinatorBase<N, T>
 };
 
 template <int N, typename T>
-typename Grid<N, T>::size_type Grid<N, T>::coord_to_index(const GridIndex& index)
+typename grid<N, T>::size_type grid<N, T>::coord_to_index(const grid_index& index)
 {
     std::size_t agg = 1;
     return IndexCoordinator<N, T, 0>(agg)(*this, index);
@@ -403,7 +403,7 @@ typename Grid<N, T>::size_type Grid<N, T>::coord_to_index(const GridIndex& index
 
 template <int N, typename T>
 template <typename... CoordTypes>
-typename Grid<N, T>::size_type Grid<N, T>::coord_to_index(CoordTypes... coords)
+typename grid<N, T>::size_type grid<N, T>::coord_to_index(CoordTypes... coords)
 {
     size_type s = 1;
     return this->coord_to_index_rec<0>(s, coords...);
@@ -411,7 +411,7 @@ typename Grid<N, T>::size_type Grid<N, T>::coord_to_index(CoordTypes... coords)
 
 template <int N, typename T>
 template <int DIM, typename... CoordTypes, typename Coord>
-typename Grid<N, T>::size_type Grid<N, T>::coord_to_index_rec(size_type& agg, Coord coord, CoordTypes... coords)
+typename grid<N, T>::size_type grid<N, T>::coord_to_index_rec(size_type& agg, Coord coord, CoordTypes... coords)
 {
     size_type s = this->coord_to_index_rec<DIM+1>(agg, coords...);
     agg *= dims_[DIM + 1];
@@ -420,7 +420,7 @@ typename Grid<N, T>::size_type Grid<N, T>::coord_to_index_rec(size_type& agg, Co
 
 template <int N, typename T>
 template <int DIM, typename Coord>
-typename Grid<N, T>::size_type Grid<N, T>::coord_to_index_rec(size_type& agg, Coord coord)
+typename grid<N, T>::size_type grid<N, T>::coord_to_index_rec(size_type& agg, Coord coord)
 {
     static_assert(DIM == N - 1, "Something is wrong");
     return agg * coord;
@@ -428,14 +428,14 @@ typename Grid<N, T>::size_type Grid<N, T>::coord_to_index_rec(size_type& agg, Co
 
 template <int N, typename T>
 template <int DIM, typename Coord, typename... CoordTypes>
-bool Grid<N, T>::within_bounds(Coord coord, CoordTypes... coords) const
+bool grid<N, T>::within_bounds(Coord coord, CoordTypes... coords) const
 {
     return (size_type)coord >= 0 && (size_type)coord < dims_[DIM] && within_bounds<DIM+1>(coords...);
 }
 
 template <int N, typename T>
 template <int DIM, typename Coord>
-bool Grid<N, T>::within_bounds(Coord coord) const
+bool grid<N, T>::within_bounds(Coord coord) const
 {
     static_assert(DIM == N - 1, "Something is wrong");
     return (size_type)coord >= 0 && (size_type)coord < dims_[DIM];
@@ -444,7 +444,7 @@ bool Grid<N, T>::within_bounds(Coord coord) const
 template <int N, typename T, int DIM>
 struct IndexSizeFiller
 {
-    void operator()(const Grid<N, T>& grid, typename Grid<N, T>::GridIndex& index)
+    void operator()(const grid<N, T>& grid, typename grid<N, T>::grid_index& index)
     {
         index(DIM) = grid.size(DIM) - 1;
         IndexSizeFiller<N, T, DIM+1>()(grid, index);
@@ -454,27 +454,27 @@ struct IndexSizeFiller
 template <int N, typename T>
 struct IndexSizeFiller<N, T, N>
 {
-    void operator()(const Grid<N, T>& grid, typename Grid<N, T>::GridIndex& index)
+    void operator()(const grid<N, T>& grid, typename grid<N, T>::grid_index& index)
     {
     }
 };
 
 template <int N, typename T>
-auto Grid<N, T>::create_last_index() const -> typename Grid<N, T>::GridIndex
+auto grid<N, T>::create_last_index() const -> typename grid<N, T>::grid_index
 {
-    GridIndex ind;
+    grid_index ind;
     IndexSizeFiller<N, T, 0>()(*this, ind);
     return ind;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// GridIndex Implementation
+// grid_index Implementation
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N, typename T, int DIM>
 struct IndexAssigner
 {
-    void operator()(typename Grid<N, T>::GridIndex& ind, typename Grid<N, T>::size_type coord)
+    void operator()(typename grid<N, T>::grid_index& ind, typename grid<N, T>::size_type coord)
     {
         ind(DIM) = coord;
         IndexAssigner<N, T, DIM+1>()(ind, coord);
@@ -484,37 +484,37 @@ struct IndexAssigner
 template <int N, typename T>
 struct IndexAssigner<N, T, N>
 {
-    void operator()(typename Grid<N, T>::GridIndex& ind, typename Grid<N, T>::size_type coord)
+    void operator()(typename grid<N, T>::grid_index& ind, typename grid<N, T>::size_type coord)
     {
     }
 };
 
 template <int N, typename T>
-Grid<N, T>::GridIndex::GridIndex()
+grid<N, T>::grid_index::grid_index()
 {
     this->assign_all(0);
 }
 
 template <int N, typename T>
 template <typename... Coords>
-Grid<N, T>::GridIndex::GridIndex(Coords... coords)
+grid<N, T>::grid_index::grid_index(Coords... coords)
 {
-    static_assert(sizeof...(coords) == N, "GridIndex constructor requires same number of arguments as dimensions");
+    static_assert(sizeof...(coords) == N, "grid_index constructor requires same number of arguments as dimensions");
     this->set_coords<0>(coords...);
 }
 
 template <int N, typename T>
-void Grid<N, T>::GridIndex::assign_all(size_type coord)
+void grid<N, T>::grid_index::assign_all(size_type coord)
 {
     IndexAssigner<N, T, 0>()(*this, coord);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// GridIterator Implementation
+// grid_iterator Implementation
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N, typename T>
-Grid<N, T>::GridIterator::GridIterator() :
+grid<N, T>::grid_iterator::grid_iterator() :
     grid_(nullptr),
     begin_(),
     end_(),
@@ -523,7 +523,7 @@ Grid<N, T>::GridIterator::GridIterator() :
 }
 
 template <int N, typename T>
-Grid<N, T>::GridIterator::GridIterator(const GridIterator& other) :
+grid<N, T>::grid_iterator::grid_iterator(const grid_iterator& other) :
     grid_(other.grid_),
     begin_(other.begin_),
     end_(other.end_),
@@ -532,7 +532,7 @@ Grid<N, T>::GridIterator::GridIterator(const GridIterator& other) :
 }
 
 template <int N, typename T>
-auto Grid<N, T>::GridIterator::operator=(const GridIterator& rhs) -> GridIterator&
+auto grid<N, T>::grid_iterator::operator=(const grid_iterator& rhs) -> grid_iterator&
 {
     if (this != &rhs) {
         grid_ = rhs.grid_;
@@ -546,7 +546,7 @@ auto Grid<N, T>::GridIterator::operator=(const GridIterator& rhs) -> GridIterato
 }
 
 template <int N, typename T>
-std::string to_string(const typename Grid<N, T>::GridIndex& index)
+std::string to_string(const typename grid<N, T>::grid_index& index)
 {
     std::stringstream ss;
     ss << "( ";
@@ -558,7 +558,7 @@ std::string to_string(const typename Grid<N, T>::GridIndex& index)
 }
 
 template <int N, typename T>
-auto Grid<N, T>::GridIterator::operator++() -> GridIterator&
+auto grid<N, T>::grid_iterator::operator++() -> grid_iterator&
 {
     for (int i = N - 1; i >= 0; --i) {
         if (curr_(i) < this->size(i) - 1) {
@@ -581,17 +581,17 @@ auto Grid<N, T>::GridIterator::operator++() -> GridIterator&
 }
 
 template <int N, typename T>
-auto Grid<N, T>::GridIterator::operator++(int) -> GridIterator
+auto grid<N, T>::grid_iterator::operator++(int) -> grid_iterator
 {
-    GridIterator git(*this);
+    grid_iterator git(*this);
     this->operator++();
     return git;
 }
 
 template <int N, typename T>
-bool Grid<N, T>::GridIterator::operator==(const GridIterator& other) const
+bool grid<N, T>::grid_iterator::operator==(const grid_iterator& other) const
 {
-    auto index_equals = [](const GridIndex& gi, const GridIndex& gj) -> bool
+    auto index_equals = [](const grid_index& gi, const grid_index& gj) -> bool
     {
         for (int i = 0; i < N; ++i) {
             if (gi(i) != gj(i)) {
@@ -608,35 +608,35 @@ bool Grid<N, T>::GridIterator::operator==(const GridIterator& other) const
 }
 
 template <int N, typename T>
-bool Grid<N, T>::GridIterator::operator!=(const GridIterator& other) const
+bool grid<N, T>::grid_iterator::operator!=(const grid_iterator& other) const
 {
     return !(this->operator==(other));
 }
 
 template <int N, typename T>
-auto Grid<N, T>::GridIterator::operator*() -> value_type&
+auto grid<N, T>::grid_iterator::operator*() -> value_type&
 {
     return grid_->at(curr_);
 //    return grid_->operator()(curr_);
 }
 
 template <int N, typename T>
-auto Grid<N, T>::GridIterator::operator->() -> value_type*
+auto grid<N, T>::grid_iterator::operator->() -> value_type*
 {
     return grid_->at(curr_);
 }
 
 template <int N, typename T>
-auto Grid<N, T>::GridIterator::operator--() -> GridIterator&
+auto grid<N, T>::grid_iterator::operator--() -> grid_iterator&
 {
     // TODO: implement
     return *this;
 }
 
 template <int N, typename T>
-auto Grid<N, T>::GridIterator::operator--(int) -> GridIterator
+auto grid<N, T>::grid_iterator::operator--(int) -> grid_iterator
 {
-    GridIterator git(*this);
+    grid_iterator git(*this);
     this->operator--();
     return git;
 }

@@ -1,9 +1,9 @@
 #ifndef MapGenerator_h
 #define MapGenerator_h
 
-#include <spellbook/grid/Grid.h>
+#include <spellbook/grid/grid.h>
 
-typedef au::Grid<2, char> Map;
+typedef au::grid<2, char> Map;
 
 class MapGenerator
 {

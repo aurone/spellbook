@@ -11,7 +11,7 @@
 #include "geometry/vector/vec2.h"
 #include "geometry/vector/vec3.h"
 #include "geometry/vector/vec4.h"
-#include "grid/Grid.h"
+#include "grid/grid.h"
 #include "math/math.h"
 #include "matrix/matrix.h"
 #include "poses/pose2.h"
