@@ -2,6 +2,7 @@
 #define au_detail_matrix_h
 
 #include <string.h>
+#include <algorithm>
 
 namespace au {
 

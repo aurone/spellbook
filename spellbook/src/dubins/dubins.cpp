@@ -353,10 +353,10 @@ double compute_arc_length(
     vec2d v1 = start - circle.circle.center;
     vec2d v2 = end - circle.circle.center;
     double theta = atan2(v2.y, v2.x) - atan2(v1.y, v1.x);
-    if (theta < 0 and circle.left()) {
+    if (theta < 0 && circle.left()) {
         theta += 2 * M_PI;
     }
-    else if (theta > 0 and circle.right()) {
+    else if (theta > 0 && circle.right()) {
         theta -= 2 * M_PI;
     }
     return fabs(theta * circle.circle.radius);

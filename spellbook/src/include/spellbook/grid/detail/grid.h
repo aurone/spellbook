@@ -444,17 +444,17 @@ bool grid<N, T>::within_bounds(Coord coord) const
 template <int N, typename T, int DIM>
 struct IndexSizeFiller
 {
-    void operator()(const grid<N, T>& grid, typename grid<N, T>::grid_index& index)
+    void operator()(const grid<N, T>& g, typename grid<N, T>::grid_index& index)
     {
-        index(DIM) = grid.size(DIM) - 1;
-        IndexSizeFiller<N, T, DIM+1>()(grid, index);
+        index(DIM) = g.size(DIM) - 1;
+        IndexSizeFiller<N, T, DIM+1>()(g, index);
     }
 };
 
 template <int N, typename T>
 struct IndexSizeFiller<N, T, N>
 {
-    void operator()(const grid<N, T>& grid, typename grid<N, T>::grid_index& index)
+    void operator()(const grid<N, T>& g, typename grid<N, T>::grid_index& index)
     {
     }
 };
