@@ -12,7 +12,7 @@ matrix<T, M, N> matrix<T, M, N>::identity()
     matrix<T, M, N> m;
     memset(m.m_data, 0, M * N * sizeof(T));
 
-    for (int i = 0; i < std::min(M, N); ++i) {
+    for (matrix_index i = 0; i < std::min(M, N); ++i) {
         m(i, i) = 1.0;
     }
 
@@ -341,7 +341,7 @@ matrix<T, N, M> inverse(const matrix<T, M, N>& m)
     // for each row, starting with the last
     for (matrix_index i = M - 1; i != (matrix_index)-1; --i) {
         // normalize row to 1
-        const T nrm = 1.0 / mc(i, i);
+        const T nrm = (T)1 / mc(i, i);
         mc(i, i) *= nrm;
         for (matrix_index j = 0; j < N; ++j) {
             out(i, j) *= nrm;
