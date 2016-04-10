@@ -78,6 +78,18 @@ vec3<T> operator-(const vec3<T>& v)
 }
 
 template <typename T>
+bool operator==(const vec3<T>& u, const vec3<T>& v)
+{
+    return u.x == v.x && u.y == v.y && u.z == v.z;
+}
+
+template <typename T>
+bool operator!=(const vec3<T>& u, const vec3<T>& v)
+{
+    return u.x != v.x || u.y != v.y || u.z != v.z;
+}
+
+template <typename T>
 T length(const vec3<T>& v)
 {
     return sqrt(length_sqrd(v));

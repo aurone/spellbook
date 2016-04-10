@@ -43,6 +43,12 @@ template <typename T>
 vec3<T> operator-(const vec3<T>& v);
 
 template <typename T>
+bool operator==(const vec3<T>& u, const vec3<T>& v);
+
+template <typename T>
+bool operator!=(const vec3<T>& u, const vec3<T>& v);
+
+template <typename T>
 T length(const vec3<T>& v);
 
 template <typename T>
