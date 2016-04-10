@@ -6,11 +6,13 @@
 namespace au {
 
 template <typename T>
-struct quaternion;
+class quaternion;
 
 template <typename T>
-struct axis_angle
+class axis_angle
 {
+public:
+    
     vec3<T> axis;
     T angle;
 

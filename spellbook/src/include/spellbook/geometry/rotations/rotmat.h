@@ -10,17 +10,19 @@
 namespace au {
 
 template <typename T>
-struct axis_angle;
+class axis_angle;
 
 template <typename T>
-struct quaternion;
+class quaternion;
 
 template <typename T, int AngleConvention>
-struct euler_angles;
+class euler_angles;
 
 template <typename T>
-struct rotmat
+class rotmat
 {
+public:
+
     rotmat();
     rotmat(const vec3<T>& _u1, const vec3<T>& _u2, const vec3<T>& _u3);
     rotmat(T a11, T a12, T a13, T a21, T a22, T a23, T a31, T a32, T a33);

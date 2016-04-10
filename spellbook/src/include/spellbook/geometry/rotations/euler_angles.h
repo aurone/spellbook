@@ -27,8 +27,10 @@ enum
 } // namespace angle_convention
 
 template <typename T, int AngleConvention>
-struct euler_angles
+class euler_angles
 {
+public:
+    
     T alpha, beta, gamma;
 
     euler_angles() : alpha(), beta(), gamma() { }

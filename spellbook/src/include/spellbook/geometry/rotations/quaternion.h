@@ -10,14 +10,16 @@
 namespace au {
 
 template <typename T>
-struct axis_angle;
+class axis_angle;
 
 template <typename T>
-struct rotmat;
+class rotmat;
 
 template <typename T>
-struct quaternion
+class quaternion
 {
+public:
+
     T w, x, y, z;
 
     quaternion();
