@@ -4,13 +4,13 @@
 #include <random>
 
 // system includes
-#include <Eigen/Dense>
 #include <spellbook/geometry/vector/vec2.h>
 #include <spellbook/geometry/vector/vec3.h>
 #include <spellbook/geometry/rotations/quaternion.h>
 #include <spellbook/geometry/rotations/axis_angle.h>
 #include <spellbook/geometry/rotations/rotmat.h>
 #include <spellbook/matrix/matrix.h>
+#include <spellbook/math/constants.h>
 
 void TestVec2()
 {
@@ -62,7 +62,7 @@ void TestQuaternion()
     std::cout << "| TestQuaternion" << std::endl;
     std::cout << "----------------------" << std::endl;
 
-    const double angle = M_PI / 4.0;
+    const double angle = au::constants<double>::pi() / 4.0;
     const au::vec3d axis(0.0, 0.0, 1.0);
 
     au::quaterniond q1(au::axis_angled(angle, axis));
@@ -85,33 +85,25 @@ void TestQuaternion()
     au::quaterniond x(0.0, 1.0, 0.0, 0.0);
     std::cout << "q1xq1* = " << q1 * x * conj(q1) << std::endl;
 
-    au::axis_angled aa(M_PI / 4.0, 0.0, 0.0, 1.0);
+    au::axis_angled aa(au::constants<double>::pi() / 4.0, 0.0, 0.0, 1.0);
     std::cout << "aa = " << aa << std::endl;
     std::cout << "(quaternion)aa = " << au::quaterniond(aa) << std::endl;
 
     {
         std::cout << au::quaterniond(au::axis_angled(0.0, au::vec3d(1.0, 0.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled( M_PI,  au::vec3d(1.0, 0.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled(-M_PI, -au::vec3d(1.0, 0.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled( M_PI,  au::vec3d(0.0, 1.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled(-M_PI, -au::vec3d(0.0, 1.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled( M_PI,  au::vec3d(0.0, 0.0, 1.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled(-M_PI, -au::vec3d(0.0, 0.0, 1.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled( 0.5 * M_PI,  au::vec3d(1.0, 0.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled(-0.5 * M_PI, -au::vec3d(1.0, 0.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled( 0.5 * M_PI,  au::vec3d(0.0, 1.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled(-0.5 * M_PI, -au::vec3d(0.0, 1.0, 0.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled( 0.5 * M_PI,  au::vec3d(0.0, 0.0, 1.0))) << std::endl;
-        std::cout << au::quaterniond(au::axis_angled(-0.5 * M_PI, -au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( au::constants<double>::pi(),  au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-au::constants<double>::pi(), -au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( au::constants<double>::pi(),  au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-au::constants<double>::pi(), -au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( au::constants<double>::pi(),  au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-au::constants<double>::pi(), -au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( 0.5 * au::constants<double>::pi(),  au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-0.5 * au::constants<double>::pi(), -au::vec3d(1.0, 0.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( 0.5 * au::constants<double>::pi(),  au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-0.5 * au::constants<double>::pi(), -au::vec3d(0.0, 1.0, 0.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled( 0.5 * au::constants<double>::pi(),  au::vec3d(0.0, 0.0, 1.0))) << std::endl;
+        std::cout << au::quaterniond(au::axis_angled(-0.5 * au::constants<double>::pi(), -au::vec3d(0.0, 0.0, 1.0))) << std::endl;
     }
-
-//    Eigen::Vector3d v; v << 1.0, 0.0, 0.0;
-//
-//    Eigen::AngleAxisd aa(M_PI / 4.0, Eigen::Vector3d(0.0, 0.0, 1.0));
-//    Eigen::Quaterniond eq;
-//    eq = aa;
-//
-//    std::cout << eq * v << std::endl;
 }
 
 void TestMatrix()
@@ -147,16 +139,16 @@ void TestRotationMatrix()
     std::cout << "----------------------" << std::endl;
 
     au::rotmatd r0(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-    au::rotmatd r1 = au::axis_angled(-0.5 * M_PI, 0.0, 0.0, 1.0);
+    au::rotmatd r1 = au::axis_angled(-0.5 * au::constants<double>::pi(), 0.0, 0.0, 1.0);
 
     std::cout << "r0 = " << r0 << std::endl;
     std::cout << "r1 = " << r1 << std::endl;
     std::cout << "r1 * r0 = " << r1 * r0 << std::endl;
     std::cout << "r0 * r1 = " << r0 * r1 << std::endl;
 
-    std::cout << au::rotmatd(au::axis_angled(0.5 * M_PI, 0.0, 0.0, 1.0)) << std::endl;
+    std::cout << au::rotmatd(au::axis_angled(0.5 * au::constants<double>::pi(), 0.0, 0.0, 1.0)) << std::endl;
 
-    au::quaterniond q(au::axis_angled(0.5 * M_PI, 0.0, 0.0, 1.0));
+    au::quaterniond q(au::axis_angled(0.5 * au::constants<double>::pi(), 0.0, 0.0, 1.0));
     std::cout << "q = " << q << std::endl;
     std::cout << au::rotmatd(q) << std::endl;
 
