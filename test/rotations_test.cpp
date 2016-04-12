@@ -11,9 +11,9 @@
 
 #define BOOST_CHECK_VEC3D_ALMOST_EQUALITY(u, v)\
 {\
-    BOOST_CHECK(fabs(u.x - v.x) < 1e-6);\
-    BOOST_CHECK(fabs(u.y - v.y) < 1e-6);\
-    BOOST_CHECK(fabs(u.z - v.z) < 1e-6);\
+    BOOST_CHECK(fabs((u).x - (v).x) < 1e-6);\
+    BOOST_CHECK(fabs((u).y - (v).y) < 1e-6);\
+    BOOST_CHECK(fabs((u).z - (v).z) < 1e-6);\
 }
 
 BOOST_AUTO_TEST_CASE(VectorConstructionTest)
