@@ -13,4 +13,4 @@ if (NOT TARGET dubins AND NOT spellbook_BINARY_DIR)
 endif()
 
 # These are IMPORTED targets created by spellbook-targets.cmake
-set(spellbook_LIBRARIES dubins mapgen memory)
+set(spellbook_LIBRARIES spellbook)
