@@ -190,7 +190,7 @@ operator<<(std::basic_ostream<CharT, Traits>& o, const color_type& c)
     return o;
 }
 
-color_type color(uint8_t r, uint8_t g, uint8_t b)
+inline color_type color(uint8_t r, uint8_t g, uint8_t b)
 {
     return color_type(r, g, b);
 }

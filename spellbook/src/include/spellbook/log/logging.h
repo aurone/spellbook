@@ -1,7 +1,12 @@
 #ifndef au_loggin_h
 #define au_loggin_h
 
+// standard includes
 #include <stdio.h>
+#include <iostream>
+
+// project includes
+#include <spellbook/term/term.h>
 
 #define AU_LOG_LEVEL_DEBUG 0   // extended-information of normal usage
 #define AU_LOG_LEVEL_INFO  1   // normal usage
@@ -23,17 +28,22 @@ namespace au {
 char* padded(const char* str, ...);
 const char* filename(const char* path);
 
+
 } // namespace au
+
+#define AU_LOG_STREAM_FIXED(stream, color, pre, msg, ...) \
+{\
+    stream << color << pre << au::padded(msg, ##__VA_ARGS__) << " | " << au::filename(__FILE__) << ':' << __LINE__ << au::term::nocolor << std::endl;\
+}
 
 #define AU_LOG_STDOUT_FIXED(pre, msg, ...) \
 {\
-    printf(pre "%s | %s:%d\n", au::padded(msg, ##__VA_ARGS__), au::filename(__FILE__), __LINE__);\
-    fflush(stdout);\
+    AU_LOG_STREAM_FIXED(std::cout, au::term::white, pre, msg, ##__VA_ARGS__)\
 }
 
 #define AU_LOG_STDERR_FIXED(pre, msg, ...) \
 {\
-    fprintf(stderr, pre "%s | %s:%d\n", au::padded(msg, ##__VA_ARGS__), au::filename(__FILE__), __LINE__);\
+    AU_LOG_STREAM_FIXED(std::cerr, au::term::red, pre, msg, ##__VA_ARGS__)\
 }
 
 #define AU_LOG_STDOUT(pre, msg, ...) \
