@@ -46,8 +46,7 @@ const char* filename(const char* path);
 // level-prefixed, colored, stream-style output to a given stream
 #define AU_LOG_STREAM_FIXED_STREAM(stream, color, pre, seq) \
 {\
-    std::stringstream au__ss; au__ss << seq;\
-    stream << color << pre << au::padded("%s", au__ss.str().c_str()) << " | " << au::filename(__FILE__) << ':' << __LINE__ << au::term::nocolor << std::endl;\
+    stream << color << pre << au::padded("%s", ((std::stringstream&)(std::stringstream() << seq)).str().c_str()) << " | " << au::filename(__FILE__) << ':' << __LINE__ << au::term::nocolor << std::endl;\
 }
 
 // level-prefixed format-style output to stdout
