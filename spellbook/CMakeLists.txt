@@ -23,7 +23,7 @@ configure_file(
 
 # export the build tree...
 
-export(TARGETS dubins mapgen memory FILE spellbook-targets.cmake)
+export(TARGETS spellbook FILE spellbook-targets.cmake)
 
 set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src/include")
 configure_file(
