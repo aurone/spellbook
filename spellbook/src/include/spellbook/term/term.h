@@ -15,7 +15,7 @@ template <typename CharT, typename Traits = std::char_traits<CharT>>
 std::basic_ostream<CharT, Traits>&
 bold(std::basic_ostream<CharT, Traits>& o);
 
-template <typename CharT, typename Traits = std::chair_traits<CharT>>
+template <typename CharT, typename Traits = std::char_traits<CharT>>
 std::basic_ostream<CharT, Traits>&
 nobold(std::basic_ostream<CharT, Traits>& o);
 
@@ -99,7 +99,7 @@ struct color_type {
     uint8_t r, g, b;
     color_type(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) { }
 };
-template <typename CharT, typename Traits = std::chair_traits<CharT>>
+template <typename CharT, typename Traits = std::char_traits<CharT>>
 std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& o, const color_type& c);
 
@@ -109,7 +109,7 @@ template <typename CharT, typename Traits = std::char_traits<CharT>>
 std::basic_ostream<CharT, Traits>&
 nocolor(std::basic_ostream<CharT, Traits>& o);
 
-template <typename CharT, typename Traits = std::chair_traits<CharT>>
+template <typename CharT, typename Traits = std::char_traits<CharT>>
 std::basic_ostream<CharT, Traits>&
 rainbow(std::basic_ostream<CharT, Traits>& o);
 
