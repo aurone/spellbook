@@ -15,12 +15,19 @@
 #define AU_LOG_LEVEL_ERROR 4   // existential cases that may have unintended consequences
 #define AU_LOG_LEVEL_FATAL 5   // unrecoverable errors that result in program termination
 
+#define AU_DEBUG_LOG_PREF   "[DEBUG] "
+#define AU_INFO_LOG_PREF    "[INFO]  "
+#define AU_CRIT_LOG_PREF    "[CRIT]  "
+#define AU_WARN_LOG_PREF    "[WARN]  "
+#define AU_ERROR_LOG_PREF   "[ERROR] "
+#define AU_FATAL_LOG_PREF   "[FATAL] "
+
 #ifndef AU_LOG_LEVEL
 #define AU_LOG_LEVEL AU_LOG_LEVEL_INFO
 #endif
 
+// compile-time formatting options
 #define AU_LOG_FILENAME_ONLY 1
-
 #define AU_LOG_MSG_PADDING 120
 
 namespace au {
@@ -28,67 +35,73 @@ namespace au {
 char* padded(const char* str, ...);
 const char* filename(const char* path);
 
-
 } // namespace au
 
+// level-prefixed, colored, format-style output to a given a stream
 #define AU_LOG_STREAM_FIXED(stream, color, pre, msg, ...) \
 {\
     stream << color << pre << au::padded(msg, ##__VA_ARGS__) << " | " << au::filename(__FILE__) << ':' << __LINE__ << au::term::nocolor << std::endl;\
 }
 
+// level-prefixed, colored, stream-style output to a given stream
+#define AU_LOG_STREAM_FIXED_STREAM(stream, color, pre, seq) \
+{\
+    std::stringstream au__ss; au__ss << seq;\
+    stream << color << pre << au::padded("%s", au__ss.str().c_str()) << " | " << au::filename(__FILE__) << ':' << __LINE__ << au::term::nocolor << std::endl;\
+}
+
+// level-prefixed format-style output to stdout
 #define AU_LOG_STDOUT_FIXED(pre, msg, ...) \
 {\
     AU_LOG_STREAM_FIXED(std::cout, au::term::white, pre, msg, ##__VA_ARGS__)\
 }
 
+// level-prefixed stream-style output to stdout
+#define AU_LOG_STDOUT_FIXED_STREAM(pre, seq) \
+{\
+    AU_LOG_STREAM_FIXED_STREAM(std::cout, au::term::white, pre, seq)\
+}
+
+// level-prefixed format-style output to stderr
 #define AU_LOG_STDERR_FIXED(pre, msg, ...) \
 {\
     AU_LOG_STREAM_FIXED(std::cerr, au::term::red, pre, msg, ##__VA_ARGS__)\
 }
 
-#define AU_LOG_STDOUT(pre, msg, ...) \
-{\
-    printf(pre msg "| %s:%d\n", ##__VA_ARGS__, au::filename(__FILE__), __LINE__);\
-    fflush(stdout);\
-}
-
-#define AU_LOG_STDERR(pre, msg, ...) \
-{\
-    fprintf(stderr, pre msg " | %s:%d\n", ##__VA_ARGS__, au::filename(__FILE__), __LINE__);\
-}
-
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_DEBUG
-#define AU_DEBUG(msg, ...) AU_LOG_STDOUT_FIXED("[DEBUG] ", msg, ##__VA_ARGS__)
+#define AU_DEBUG(msg, ...) AU_LOG_STDOUT_FIXED(AU_DEBUG_LOG_PREF, msg, ##__VA_ARGS__)
+#define AU_DEBUG_STREAM(seq) AU_LOG_STDOUT_FIXED_STREAM(AU_DEBUG_LOG_PREF, seq)
 #else
 #define AU_DEBUG(msg, ...)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_INFO
-#define AU_INFO(msg, ...)  AU_LOG_STDOUT_FIXED("[INFO]  ", msg, ##__VA_ARGS__)
+#define AU_INFO(msg, ...)  AU_LOG_STDOUT_FIXED(AU_INFO_LOG_PREF, msg, ##__VA_ARGS__)
+#define AU_INFO_STREAM(seq) AU_LOG_STDOUT_FIXED_STREAM(AU_INFO_LOG_PREF, seq)
 #else
 #define AU_INFO(msg, ...)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_CRIT
-#define AU_CRIT(msg, ...)  AU_LOG_STDOUT_FIXED("[CRIT]  ", msg, ##__VA_ARGS__)
+#define AU_CRIT(msg, ...)  AU_LOG_STDOUT_FIXED(AU_CRIT_LOG_PREF, msg, ##__VA_ARGS__)
 #else
 #define AU_CRIT(msg, ...)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_CRIT
-#define AU_WARN(msg, ...)  AU_LOG_STDERR_FIXED("[WARN]  ", msg, ##__VA_ARGS__)
+#define AU_WARN(msg, ...)  AU_LOG_STDERR_FIXED(AU_WARN_LOG_PREF, msg, ##__VA_ARGS__)
 #else
 #define AU_WARN(msg, ...)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_ERROR
-#define AU_ERROR(msg, ...) AU_LOG_STDERR_FIXED("[ERROR] ", msg, ##__VA_ARGS__)
+#define AU_ERROR(msg, ...) AU_LOG_STDERR_FIXED(AU_ERROR_LOG_PREF, msg, ##__VA_ARGS__)
 #else
 #define AU_ERROR(msg, ...)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_FATAL
-#define AU_FATAL(msg, ...) AU_LOG_STDERR_FIXED("[FATAL] ", msg, ##__VA_ARGS__)
+#define AU_FATAL(msg, ...) AU_LOG_STDERR_FIXED(AU_FATAL_LOG_PREF, msg, ##__VA_ARGS__)
 #else
 #define AU_FATAL(msg, ...)
 #endif
