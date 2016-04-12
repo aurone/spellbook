@@ -97,12 +97,17 @@ white(std::basic_ostream<CharT, Traits>& o);
 
 struct color_type {
     uint8_t r, g, b;
-    color_type(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) { }
+    bool index;
+    color_type(uint8_t index) : r(index), g(0), b(0), index(true) { }
+    color_type(uint8_t r, uint8_t g, uint8_t b) :
+        r(r), g(g), b(b), index(false)
+    { }
 };
 template <typename CharT, typename Traits = std::char_traits<CharT>>
 std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& o, const color_type& c);
 
+color_type color(uint8_t index);
 color_type color(uint8_t r, uint8_t g, uint8_t b);
 
 template <typename CharT, typename Traits = std::char_traits<CharT>>

@@ -184,10 +184,20 @@ template <typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& o, const color_type& c)
 {
-    o << "\x1B[38;2;" << std::to_string((unsigned)c.r) << ';' <<
-            std::to_string((unsigned)c.g) << ';' <<
-            std::to_string((unsigned)c.b) << 'm';
+    if (c.index) {
+        o << "\x1B[38;5;" << std::to_string((unsigned)c.r) << 'm';
+    }
+    else {
+        o << "\x1B[38;2;" << std::to_string((unsigned)c.r) << ';' <<
+                std::to_string((unsigned)c.g) << ';' <<
+                std::to_string((unsigned)c.b) << 'm';
+    }
     return o;
+}
+
+inline color_type color(uint8_t index)
+{
+    return color_type(index);
 }
 
 inline color_type color(uint8_t r, uint8_t g, uint8_t b)
