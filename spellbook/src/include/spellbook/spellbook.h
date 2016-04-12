@@ -17,6 +17,7 @@
 #include "poses/pose2.h"
 #include "random/gaussian.h"
 #include "raster/raster.h"
+#include "term/term.h"
 #include "utils/RunUponDestruction.h"
 #include "utils/utils.h"
 
