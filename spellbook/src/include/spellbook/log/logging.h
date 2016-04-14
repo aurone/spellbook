@@ -4,6 +4,7 @@
 // standard includes
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 
 // project includes
 #include <spellbook/term/term.h>
