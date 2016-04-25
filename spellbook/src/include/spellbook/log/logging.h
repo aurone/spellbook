@@ -73,6 +73,7 @@ const char* filename(const char* path);
 #define AU_DEBUG_STREAM(seq) AU_LOG_STDOUT_FIXED_STREAM(AU_DEBUG_LOG_PREF, seq)
 #else
 #define AU_DEBUG(msg, ...)
+#define AU_DEBUG_STREAM(seq)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_INFO
@@ -80,30 +81,34 @@ const char* filename(const char* path);
 #define AU_INFO_STREAM(seq) AU_LOG_STDOUT_FIXED_STREAM(AU_INFO_LOG_PREF, seq)
 #else
 #define AU_INFO(msg, ...)
+#define AU_INFO_STREAM(seq)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_CRIT
 #define AU_CRIT(msg, ...)  AU_LOG_STDOUT_FIXED(AU_CRIT_LOG_PREF, msg, ##__VA_ARGS__)
 #else
 #define AU_CRIT(msg, ...)
+#define AU_CRIT_STREAM(seq)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_CRIT
 #define AU_WARN(msg, ...)  AU_LOG_STDERR_FIXED(AU_WARN_LOG_PREF, msg, ##__VA_ARGS__)
 #else
-#define AU_WARN(msg, ...)
+#define AU_WARN_STREAM(seq)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_ERROR
 #define AU_ERROR(msg, ...) AU_LOG_STDERR_FIXED(AU_ERROR_LOG_PREF, msg, ##__VA_ARGS__)
 #else
 #define AU_ERROR(msg, ...)
+#define AU_ERROR_STREAM(seq)
 #endif
 
 #if AU_LOG_LEVEL <= AU_LOG_LEVEL_FATAL
 #define AU_FATAL(msg, ...) AU_LOG_STDERR_FIXED(AU_FATAL_LOG_PREF, msg, ##__VA_ARGS__)
 #else
 #define AU_FATAL(msg, ...)
+#define AU_FATAL_STREAM(seq)
 #endif
 
 // TODO: relative or base path filename
