@@ -15,6 +15,13 @@ struct vec3
     vec3() : x(), y(), z() { }
     vec3(T x, T y, T z) : x(x), y(y), z(z) { }
 
+    template <typename U> vec3& operator+=(U c);
+    template <typename U> vec3& operator+=(const vec3<U>& rhs);
+    template <typename U> vec3& operator-=(U c);
+    template <typename U> vec3& operator-=(const vec3<U>& rhs);
+    template <typename U> vec3& operator*=(U c);
+    template <typename U> vec3& operator/=(U c);
+
     void normalize();
     T length() const;
     T length_sqrd() const;

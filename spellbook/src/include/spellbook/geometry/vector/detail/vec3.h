@@ -6,6 +6,66 @@
 namespace au {
 
 template <typename T>
+template <typename U>
+vec3<T>& vec3<T>::operator+=(U c)
+{
+    x += c;
+    y += c;
+    z += c;
+    return *this;
+}
+
+template <typename T>
+template <typename U>
+vec3<T>& vec3<T>::operator+=(const vec3<U>& rhs)
+{
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+    return *this;
+}
+
+template <typename T>
+template <typename U>
+vec3<T>& vec3<T>::operator-=(U c)
+{
+    x -= c;
+    y -= c;
+    z -= c;
+    return *this;
+}
+
+template <typename T>
+template <typename U>
+vec3<T>& vec3<T>::operator-=(const vec3<U>& rhs)
+{
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+    return *this;
+}
+
+template <typename T>
+template <typename U>
+vec3<T>& vec3<T>::operator*=(U c)
+{
+    x *= c;
+    y *= c;
+    z *= c;
+    return *this;
+}
+
+template <typename T>
+template <typename U>
+vec3<T>& vec3<T>::operator/=(U c)
+{
+    x /= c;
+    y /= c;
+    z /= c;
+    return *this;
+}
+
+template <typename T>
 void vec3<T>::normalize()
 {
     *this = *this / length();
