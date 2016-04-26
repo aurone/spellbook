@@ -1,66 +1,76 @@
-#ifndef Gaussian_h
-#define Gaussian_h
+#ifndef au_gaussian_h
+#define au_gaussian_h
 
-#include <cmath>
-#include <Eigen/Dense>
+// standard includes
+#include <math.h>
+
+// project includes
+#include <spellbook/matrix/matrix.h>
+#include <spellbook/math/constants.h>
 #include <spellbook/utils/utils.h>
 
-constexpr double SqrtTwoPi() { return sqrt(2.0 * M_PI); }
+namespace au {
 
-double gaussian(double x, double mean, double sigma)
+inline double gaussian(double x, double mean, double sigma)
 {
-    return ((1.0 / sigma) * SqrtTwoPi()) * exp(-0.5 * sqrd((1.0 / sigma) * (x - mean)));
+    return ((1.0 / sigma) * constants<double>::sqrt_two_pi()) * exp(-0.5 * sqrd((1.0 / sigma) * (x - mean)));
 }
 
-class Gaussian1
+template <int N>
+class gaussian_distribution { };
+
+template <>
+class gaussian_distribution<1>
 {
 public:
 
-    Gaussian1(double mean, double sigma) :
-        mean_(mean),
-        sigma_(sigma)
+    gaussian_distribution(double mean, double sigma) :
+        m_mean(mean),
+        m_sigma(sigma)
     {
     }
 
-    double operator()(double x)
+    const double pdf(double x) const
     {
-        return gaussian(x, mean_, sigma_);
+        return gaussian(x, m_mean, m_sigma);
+    }
+
+    const double operator()(double x) const
+    {
+        return gaussian(x, m_mean, m_sigma);
     }
 
 private:
 
-    double mean_;
-    double sigma_;
+    double m_mean;
+    double m_sigma;
 };
 
-class Gaussian2
+template <>
+class gaussian_distribution<2>
 {
 public:
 
-    Gaussian2(const Eigen::Vector2d& mean, const Eigen::Matrix2d& covariance) :
-        mean_(mean), covariance_(covariance) { }
+    gaussian_distribution(const vector2d& mean, const matrix2d& cov) :
+        m_mean(mean), m_cov(cov) { }
 
-    // todo: support any version of operator() that can construct a Vector2d
-//    template <typename... Args>
-//    const double operator(Args... args) const { return this->operator()(Eigen::Vector2d(args)); }
-
-    const double operator()(const Eigen::Vector2d& x) const
+    const double pdf(const vector2d& x) const
     {
         const double k = 2.0; // dimensionality
-        return (1.0 / sqrt(pow((2.0 * M_PI), k)) * sqrt(covariance_.determinant())) *
-                exp(-0.5 * (((x - mean_).transpose() * covariance_.inverse() * (x - mean_))(0, 0)));
+        return (1.0 / sqrt(pow((2.0 * constants<double>::pi()), k)) * sqrt(determinant(m_cov))) * exp(-0.5 * ((transpose(x - m_mean) * inverse(m_cov) * (x - m_mean))(0, 0)));
+    }
 
-//        Eigen::Vector2d diff = x - mean_;
-//        return (1.0 / ((2.0 * M_PI) * sqrt(covariance_.determinant()))) *
-//                exp(-0.5 *
-//                    ((diff.transpose() * covariance_.inverse() * diff)(0, 0))
-//                   );
+    const double operator()(const vector2d& x) const
+    {
+        return pdf(x);
     }
 
 private:
 
-    Eigen::Vector2d mean_;
-    Eigen::Matrix2d covariance_;
+    vector2d m_mean;
+    matrix2d m_cov;
 };
+
+} // namespace au
 
 #endif
