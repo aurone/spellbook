@@ -8,18 +8,18 @@ namespace au {
 
 template <typename T>
 void RasterizeLine(
-    grid<2, T>& grid,
+    grid<2, T>& g,
     const typename grid<2, T>::grid_index& a,
     const typename grid<2, T>::grid_index& b,
     const T& fill)
 {
-    auto filler = [&](const typename grid<2,T>::grid_index& i) { grid(i) = fill; };
-    RasterizeLine(grid, a, b, filler);
+    auto filler = [&](const typename grid<2,T>::grid_index& i) { g(i) = fill; };
+    RasterizeLine(g, a, b, filler);
 }
 
 template <typename T, typename Function>
 void RasterizeLine(
-    grid<2, T>& grid,
+    grid<2, T>& g,
     typename grid<2, T>::grid_index a,
     typename grid<2, T>::grid_index b,
     const Function& fn)
