@@ -20,9 +20,10 @@ inline double signf(double d, double eps = 0.0)
     }
 }
 
-inline double sqrd(double d)
+template <typename T>
+constexpr T sqrd(T t)
 {
-    return d * d;
+    return t * t;
 }
 
 inline const char* boolstr(bool b)
