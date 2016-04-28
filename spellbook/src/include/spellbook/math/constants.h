@@ -21,7 +21,7 @@ public:
     static constexpr double two_pi() { return 2.0 * pi(); }
     static constexpr double sqrt_two_pi() { return sqrt(two_pi()); }
 
-    static constexpr double e() { 2.71828182845904523536028747135266249775724709369995; }
+    static constexpr double e() { return 2.71828182845904523536028747135266249775724709369995; }
 };
 
 template <>
@@ -36,7 +36,7 @@ public:
     static constexpr float two_pi() { return 2.0f * pi(); }
     static constexpr float sqrt_two_pi() { return sqrt(two_pi()); }
 
-    static constexpr float e() { 2.71828182845904523536028747135266249775724709369995F; }
+    static constexpr float e() { return 2.71828182845904523536028747135266249775724709369995F; }
 };
 
 template <>
@@ -51,7 +51,7 @@ public:
     static constexpr long double two_pi() { return 2.0L * pi(); }
     static constexpr long double sqrt_two_pi() { return sqrt(two_pi()); }
 
-    static constexpr long double e() { 2.71828182845904523536028747135266249775724709369995L; }
+    static constexpr long double e() { return 2.71828182845904523536028747135266249775724709369995L; }
 };
 
 } // namespace au
