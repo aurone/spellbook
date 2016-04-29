@@ -114,6 +114,8 @@ template <int N, typename T>
 grid<N, T>& grid<N, T>::operator=(grid&& rhs)
 {
     if (this != &rhs) {
+        clear();
+
         data_ = rhs.data_;
         memcpy(dims_, rhs.dims_, N * sizeof(size_type));
 
@@ -167,7 +169,6 @@ typename grid<N, T>::const_reference grid<N, T>::at(CoordTypes... coords) const
 }
 
 template <int N, typename T>
-template <typename... CoordTypes>
 auto grid<N, T>::operator()(const index& i) -> reference
 {
     size_type ind = this->coord_to_index(i);
@@ -175,14 +176,12 @@ auto grid<N, T>::operator()(const index& i) -> reference
 }
 
 template <int N, typename T>
-template <typename... CoordTypes>
 auto grid<N, T>::operator()(const index& i) const -> const_reference
 {
     return const_cast<const T&>(const_cast<grid<N, T>*>(this)->operator()(i));
 }
 
 template <int N, typename T>
-template <typename... CoordTypes>
 auto grid<N, T>::at(const index& i) -> reference
 {
     size_type ind = this->coord_to_index(i);
@@ -195,7 +194,6 @@ auto grid<N, T>::at(const index& i) -> reference
 }
 
 template <int N, typename T>
-template <typename... CoordTypes>
 auto grid<N, T>::at(const index& i) const -> const_reference
 {
     return const_cast<const T&>(const_cast<grid<N, T>*>(this)->at(i));
@@ -260,10 +258,18 @@ grid<N, T>::gbegin(const index& begin, const index& end)
 {
     iterator it;
     it.grid_ = this;
-    it.begin_ = begin;
-    it.end_ = end;
-    it.curr_ = begin;
-    // it.inc_ = N - 1
+    if (total_size() == 0) {
+        // it.begin_ = [ 0, 0, .., 0 ]
+        it.end_ = this->create_last_index();
+        it.curr_ = this->create_last_index();
+        it.inc_ = std::numeric_limits<size_type>::max();
+    }
+    else {
+        it.begin_ = begin;
+        it.end_ = end;
+        it.curr_ = begin;
+        // it.inc_ = N - 1
+    }
     return it;
 }
 
@@ -327,10 +333,17 @@ void grid<N, T>::resize(SizeTypes... sizes)
 {
     static_assert(sizeof...(sizes) == N, "resize requires same number of arguments as dimensions");
 
-    this->clear();
-    size_type total_size = mul(sizes...);
-    data_ = new T[total_size];
-    this->set_sizes<0>(sizes...);
+    if (data_) {
+        grid<N, T> new_grid(sizes...);
+        copy_grid(new_grid);
+        *this = std::move(new_grid);
+    }
+    else {
+        clear();
+        size_type total_size = mul(sizes...);
+        data_ = new T[total_size];
+        set_sizes<0>(dims_, sizes...);
+    }
 }
 
 template <int N, typename T>
@@ -479,6 +492,27 @@ auto grid<N, T>::create_last_index() const -> typename grid<N, T>::index
     index i;
     IndexSizeFiller<N, T, 0>()(*this, i);
     return i;
+}
+
+template <int N, typename T>
+void grid<N, T>::copy_grid(grid& g)
+{
+    index start; // [ 0, 0, .., 0 ]
+
+    index end = create_last_index();
+    for (int i = 0; i < N; ++i) {
+        if (end(i) > g.size(i) - 1) {
+            end(i) = g.size(i) - 1;
+        }
+    }
+
+    std::cout << "copy " << start << " x " << end << std::endl;
+
+    // copy over old data into new buffer; shouldn't copy anything if the
+    // current data buffer is null
+    for (auto git = gbegin(start, end); git != gend(start, end); ++git) {
+        g(git.cindex()) = *git;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

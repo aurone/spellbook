@@ -126,6 +126,23 @@ BOOST_AUTO_TEST_CASE(GridMoveAssignmentTest)
             BOOST_CHECK_EQUAL(g2(x, y), gkern[y * 5 + x]);
         }
     }
+
+    au::grid<2, int> g3(2, 2);
+    g3 = std::move(g2);
+
+    BOOST_CHECK_EQUAL(g2.total_size(), 0);
+    BOOST_CHECK(!g2.data());
+
+    BOOST_CHECK_EQUAL(g3.size(0), 5);
+    BOOST_CHECK_EQUAL(g3.size(1), 5);
+    BOOST_CHECK_EQUAL(g3.total_size(), 25);
+    BOOST_CHECK(g3.data());
+
+    for (int y = 0; y < 5; ++y) {
+        for (int x = 0; x < 5; ++x) {
+            BOOST_CHECK_EQUAL(g3(x, y), gkern[y * 5 + x]);
+        }
+    }
 }
 
 BOOST_AUTO_TEST_CASE(GridOutOfBoundsTest)
@@ -229,5 +246,33 @@ BOOST_AUTO_TEST_CASE(GridGridIteratorTest)
 
 BOOST_AUTO_TEST_CASE(GridResizeTest)
 {
+    au::grid<2, int> g;
+    g.resize(2, 2);
+    g(0, 0) = 1;
+    g(0, 1) = 1;
+    g(1, 0) = 2;
+    g(1, 1) = 3;
+    for (size_t i = 0; i < g.size(0); ++i) {
+        for (size_t j = 0; j < g.size(1); ++j) {
+            std::cout << g(i, j) << ' ';
+        }
+        std::cout << std::endl;
+    }
 
+    g.resize(5, 5);
+    for (size_t i = 0; i < g.size(0); ++i) {
+        for (size_t j = 0; j < g.size(1); ++j) {
+            std::cout << g(i, j) << ' ';
+        }
+        std::cout << std::endl;
+    }
+
+    g.resize(1, 1);
+
+    for (size_t i = 0; i < g.size(0); ++i) {
+        for (size_t j = 0; j < g.size(1); ++j) {
+            std::cout << g(i, j) << ' ';
+        }
+        std::cout << std::endl;
+    }
 }

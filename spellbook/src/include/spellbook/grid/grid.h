@@ -86,16 +86,12 @@ public:
     template <typename... CoordTypes>
     const_reference at(CoordTypes... coords) const;
 
-    template <typename... CoordTypes>
     reference operator()(const index& i);
 
-    template <typename... CoordTypes>
     const_reference operator()(const index& i) const;
 
-    template <typename... CoordTypes>
     reference at(const index& i);
 
-    template <typename... CoordTypes>
     const_reference at(const index& i) const;
 
     T* data() { return data_; }
@@ -141,18 +137,18 @@ private:
     void copy(const grid& other);
 
     template <size_type DIM, typename SizeType, typename... SizeTypes> // TODO: how to declare DIM in a separate implementation?
-    void set_sizes(SizeType size, SizeTypes... sizes)
+    void set_sizes(size_type* dims, SizeType size, SizeTypes... sizes)
     {
         static_assert(DIM < N-1, "Invalid dimension passed to set_sizes");
-        dims_[DIM] = size;
-        this->set_sizes<DIM+1>(sizes...);
+        dims[DIM] = size;
+        this->set_sizes<DIM+1>(dims, sizes...);
     }
 
     template <size_type DIM, typename SizeType>
-    void set_sizes(SizeType size)
+    void set_sizes(size_type* dims, SizeType size)
     {
         static_assert(DIM == N-1, "Invalid number of sizes passed to set_sizes");
-        dims_[N-1] = size;
+        dims[N-1] = size;
     }
 
     size_type coord_to_index(const index& i);
@@ -176,6 +172,8 @@ private:
     bool within_bounds(Coord coord) const;
 
     index create_last_index() const;
+
+    void copy_grid(grid& g);
 };
 
 template <int N, typename T>
