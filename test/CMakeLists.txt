@@ -24,3 +24,6 @@ target_link_libraries(matrix_test ${Boost_LIBRARIES})
 
 add_executable(rotations_test rotations_test.cpp)
 target_link_libraries(rotations_test ${Boost_LIBRARIES})
+
+add_executable(grid_test grid_test.cpp)
+target_link_libraries(grid_test ${Boost_LIBRARIES})
