@@ -346,6 +346,18 @@ void grid<N, T>::resize(SizeTypes... sizes)
     }
 }
 
+//template <int N, typename T>
+//void resize(const index& sizes)
+//{
+//
+//}
+//
+//template <int N, typename T>
+//void resize(const index& sizes, const value_type& value)
+//{
+//
+//}
+
 template <int N, typename T>
 void grid<N, T>::assign(const T& value)
 {
@@ -505,8 +517,6 @@ void grid<N, T>::copy_grid(grid& g)
             end(i) = g.size(i) - 1;
         }
     }
-
-    std::cout << "copy " << start << " x " << end << std::endl;
 
     // copy over old data into new buffer; shouldn't copy anything if the
     // current data buffer is null

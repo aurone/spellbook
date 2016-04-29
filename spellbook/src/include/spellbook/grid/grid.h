@@ -87,11 +87,9 @@ public:
     const_reference at(CoordTypes... coords) const;
 
     reference operator()(const index& i);
-
     const_reference operator()(const index& i) const;
 
     reference at(const index& i);
-
     const_reference at(const index& i) const;
 
     T* data() { return data_; }
@@ -125,6 +123,9 @@ public:
 
     template <typename... SizeTypes>
     void resize(SizeTypes... sizes);
+
+//    void resize(const index& sizes);
+//    void resize(const index& sizes, const value_type& value);
 
     void assign(const T& value);
     ///@}
