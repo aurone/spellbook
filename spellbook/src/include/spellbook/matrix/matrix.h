@@ -111,35 +111,47 @@ template <typename T> using vector2 = vector<T, 2>;
 template <typename T> using vector3 = vector<T, 3>;
 template <typename T> using vector4 = vector<T, 4>;
 
-typedef matrix1<float> matrix1f;
-typedef matrix2<float> matrix2f;
-typedef matrix3<float> matrix3f;
-typedef matrix4<float> matrix4f;
+#define DECLARE_MATRIX_TYPEDEFS(type, suff) \
+typedef matrix1<type> matrix1##suff;\
+typedef matrix2<type> matrix2##suff;\
+typedef matrix3<type> matrix3##suff;\
+typedef matrix4<type> matrix4##suff;
 
-typedef matrix1<double> matrix1d;
-typedef matrix2<double> matrix2d;
-typedef matrix3<double> matrix3d;
-typedef matrix4<double> matrix4d;
+#define DECLARE_VECTOR_TYPEDEFS(type, suff) \
+typedef vector1<type> vector1##suff;\
+typedef vector2<type> vector2##suff;\
+typedef vector3<type> vector3##suff;\
+typedef vector4<type> vector4##suff;
 
-typedef matrix1<long double> matrix1ld;
-typedef matrix2<long double> matrix2ld;
-typedef matrix3<long double> matrix3ld;
-typedef matrix4<long double> matrix4ld;
+DECLARE_MATRIX_TYPEDEFS(bool,       b)
 
-typedef vector1<float> vector1f;
-typedef vector2<float> vector2f;
-typedef vector3<float> vector3f;
-typedef vector4<float> vector4f;
+DECLARE_MATRIX_TYPEDEFS(short int,  s)
+DECLARE_MATRIX_TYPEDEFS(int,        i)
+DECLARE_MATRIX_TYPEDEFS(long int,   l)
+DECLARE_MATRIX_TYPEDEFS(long long,  ll)
 
-typedef vector1<double> vector1d;
-typedef vector2<double> vector2d;
-typedef vector3<double> vector3d;
-typedef vector4<double> vector4d;
+DECLARE_MATRIX_TYPEDEFS(unsigned short int,  us)
+DECLARE_MATRIX_TYPEDEFS(unsigned int,        ui)
+DECLARE_MATRIX_TYPEDEFS(unsigned long int,   ul)
+DECLARE_MATRIX_TYPEDEFS(unsigned long long,  ull)
 
-typedef vector1<long double> vector1ld;
-typedef vector2<long double> vector2ld;
-typedef vector3<long double> vector3ld;
-typedef vector4<long double> vector4ld;
+DECLARE_MATRIX_TYPEDEFS(float,          f)
+DECLARE_MATRIX_TYPEDEFS(double,         d)
+DECLARE_MATRIX_TYPEDEFS(long double,    ld)
+
+DECLARE_VECTOR_TYPEDEFS(bool,       b)
+
+DECLARE_VECTOR_TYPEDEFS(unsigned short int,  us)
+DECLARE_VECTOR_TYPEDEFS(unsigned int,        ui)
+DECLARE_VECTOR_TYPEDEFS(unsigned long int,   ul)
+DECLARE_VECTOR_TYPEDEFS(unsigned long long,  ull)
+
+DECLARE_VECTOR_TYPEDEFS(float,          f)
+DECLARE_VECTOR_TYPEDEFS(double,         d)
+DECLARE_VECTOR_TYPEDEFS(long double,    ld)
+
+#undef DECLARE_MATRIX_TYPEDEFS
+#undef DECLARE_VECTOR_TYPEDEFS
 
 struct matrix_exception : public std::logic_error
 {
