@@ -462,7 +462,8 @@ template <int DIM, typename Coord>
 typename grid<N, T>::size_type grid<N, T>::coord_to_index_rec(size_type& agg, Coord coord)
 {
     static_assert(DIM == N - 1, "Something is wrong");
-    return agg * coord;
+//    agg *= dims_[DIM];
+    return coord;
 }
 
 template <int N, typename T>
