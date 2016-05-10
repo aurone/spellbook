@@ -533,7 +533,7 @@ void grid<N, T>::copy_grid(grid& g)
 template <int N, typename T, int DIM>
 struct IndexAssigner
 {
-    void operator()(typename grid_index<N, T>& ind, typename grid<N, T>::size_type coord)
+    void operator()(grid_index<N, T>& ind, typename grid<N, T>::size_type coord)
     {
         ind(DIM) = coord;
         IndexAssigner<N, T, DIM+1>()(ind, coord);
@@ -543,7 +543,7 @@ struct IndexAssigner
 template <int N, typename T>
 struct IndexAssigner<N, T, N>
 {
-    void operator()(typename grid_index<N, T>& ind, typename grid<N, T>::size_type coord)
+    void operator()(grid_index<N, T>& ind, typename grid<N, T>::size_type coord)
     {
     }
 };

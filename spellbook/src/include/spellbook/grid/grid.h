@@ -234,6 +234,12 @@ template <int N, typename T>
 std::ostream& operator<<(std::ostream&, const grid_index<N, T>&);
 
 template <int N, typename T>
+class grid_iterator;
+
+template <int N, typename T>
+std::ostream& operator<<(std::ostream&, const grid_iterator<N, T>&);
+
+template <int N, typename T>
 class grid_iterator : public std::iterator<
         std::bidirectional_iterator_tag,
         typename grid<N, T>::value_type>
@@ -278,8 +284,8 @@ public:
     size_type size(size_type dim) const { return end_(dim) - begin_(dim) + 1; }
 };
 
-template <int N, typename T>
-std::ostream& operator<<(std::ostream&, const grid_iterator<N, T>&);
+//template <int N, typename T>
+//std::ostream& operator<<(std::ostream&, const grid_iterator<N, T>&);
 
 } // namespace au
 
