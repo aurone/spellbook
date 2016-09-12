@@ -18,6 +18,14 @@ BOOST_AUTO_TEST_CASE(GridDefaultConstructorTest)
     BOOST_CHECK_EQUAL(g.begin(), g.end());
 }
 
+BOOST_AUTO_TEST_CASE(GridOneDimensionalTest)
+{
+    au::grid<1, int> g(8);
+    BOOST_CHECK_EQUAL(g.size(0), 8);
+    BOOST_CHECK_EQUAL(g.total_size(), 8);
+    BOOST_CHECK(g.data());
+}
+
 BOOST_AUTO_TEST_CASE(GridSizeConstructorTest)
 {
     au::grid<2, int> g(5, 5);
