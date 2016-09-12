@@ -46,14 +46,20 @@ template <class T> struct mul_type<T> : id<T> {};
 template<class T, class U, class... P>
 struct mul_type<T,U,P...> : id<decltype(val<T>() * val<typename mul_type<U,P...>::type>())> {};
 
+template <typename A>
+typename mul_type<A>::type mul(A a)
+{
+    return a;
+}
+
 template <typename A, typename B>
 typename mul_type<A, B>::type mul(A a, B b)
 {
     return a * b;
 }
 
-template <typename A0, typename A1, typename... sizes>
-typename mul_type<A0, A1, sizes...>::type mul(A0 a0, A1 a1, sizes... dims)
+template <typename A0, typename A1, typename... Sizes>
+typename mul_type<A0, A1, Sizes...>::type mul(A0 a0, A1 a1, Sizes... dims)
 {
    return a0 * mul(a1, dims...);
 }
