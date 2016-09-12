@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(testspellbook)
 
-include(${CMAKE_SOURCE_DIR}/cmake/Modules/EnableCXX11.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/Modules/LocateEigen.cmake)
+include(${spellbook_SOURCE_DIR}/cmake/Modules/EnableCXX11.cmake)
+include(${spellbook_SOURCE_DIR}/cmake/Modules/LocateEigen.cmake)
 
 enable_cxx11()
 

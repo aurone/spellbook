@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(libspellbook)
 
-include(${CMAKE_SOURCE_DIR}/cmake/Modules/EnableCXX11.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/Modules/LocateEigen.cmake)
+include(${spellbook_SOURCE_DIR}/cmake/Modules/EnableCXX11.cmake)
+include(${spellbook_SOURCE_DIR}/cmake/Modules/LocateEigen.cmake)
 
 set(SB_MAJOR_VER 0)
 set(SB_MINOR_VER 0)
@@ -43,7 +43,7 @@ endif()
 
 set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
 configure_file(
-    spellbook-config.cmake.in 
+    spellbook-config.cmake.in
     "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/spellbook-config.cmake"
     @ONLY)
 
